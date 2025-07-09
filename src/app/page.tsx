@@ -18,10 +18,10 @@ import {
   SuggestedImprovementsWidget,
   SourceBreakdownWidget,
   CustomerProfileBreakdownWidget,
-  FeedbackTable,
 } from "@/components/dashboard-widgets";
 import { DrivePicker } from '@/components/drive-picker';
 import { Plus, Upload } from 'lucide-react';
+import { RAGSearch } from '@/components/rag-search';
 
 interface CustomerFeedbackRow {
   fields: Record<string, string>;
@@ -52,7 +52,7 @@ export function useCustomerData() {
 }
 
 function DashboardWidgetsGrid() {
-  const { data, setData } = useCustomerData();
+  const { data } = useCustomerData();
   const [open, setOpen] = useState(false);
   
   return (
@@ -144,12 +144,13 @@ function DashboardWidgetsGrid() {
               <SourceBreakdownWidget />
             </section>
           </div>
+          {/* RAG Search Section */}
           <div className="w-full max-w-7xl mt-12">
             <h2 className="text-xl font-semibold mb-4 text-slate-800 flex items-center gap-2">
               <div className="w-1 h-6 bg-slate-300 rounded-full"></div>
-              Feedback Table
+              Ask Your Data (RAG Search)
             </h2>
-            <FeedbackTable rows={data} onUpdate={setData} />
+            <RAGSearch />
           </div>
         </>
       )}

@@ -1,22 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { upsertFeedbackVector, queryFeedbackVector } from '@/lib/feedback-vector';
+import { SupabaseVectorStore } from '@langchain/community/vectorstores/supabase';
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+const vectorStore = new SupabaseVectorStore(
+  new OpenAIEmbeddings({ openAIApiKey: process.env.OPENAI_API_KEY }),
+  { client: supabase, tableName: 'customer_feedback' }
+);
 
 export async function POST(req: NextRequest) {
   try {
     const { mode, id, text, embedding, metadata, topK = 10 } = await req.json();
-    if (!mode || !embedding || !Array.isArray(embedding)) {
-      return NextResponse.json({ error: 'Missing mode or embedding' }, { status: 400 });
+    if (!mode) {
+      return NextResponse.json({ error: 'Missing mode' }, { status: 400 });
     }
     if (mode === 'upsert') {
-      if (!text || !metadata) {
-        return NextResponse.json({ error: 'Missing text or metadata for upsert' }, { status: 400 });
+      if (!text || !embedding || !metadata) {
+        return NextResponse.json({ error: 'Missing text, embedding, or metadata for upsert' }, { status: 400 });
       }
-      await upsertFeedbackVector({ id, text, embedding, metadata });
+      await vectorStore.addDocuments([
+        { pageContent: text, metadata: { ...metadata, id, embedding } }
+      ]);
       return NextResponse.json({ success: true });
     } else if (mode === 'query') {
-      const { data, error } = await queryFeedbackVector({ embedding, topK });
-      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-      return NextResponse.json({ results: data });
+      if (!embedding) {
+        return NextResponse.json({ error: 'Missing embedding for query' }, { status: 400 });
+      }
+      const results = await vectorStore.similaritySearchVectorWithScore(embedding, topK);
+      return NextResponse.json({ results: results.map(([doc, score]) => ({ text: doc.pageContent, metadata: doc.metadata, similarity: score })) });
     } else {
       return NextResponse.json({ error: 'Invalid mode' }, { status: 400 });
     }

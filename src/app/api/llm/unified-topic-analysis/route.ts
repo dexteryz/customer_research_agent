@@ -232,58 +232,83 @@ async function storeTopicInsights(insights: TopicInsight[]): Promise<void> {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
 
+    // Get existing insights to check for duplicates
+    const { data: existingInsights } = await supabase
+      .from('llm_insights')
+      .select('insight_type, content')
+      .in('insight_type', insights.flatMap(insight => {
+        const topicType = insight.topic.toLowerCase().replace(' ', '_');
+        return [`${topicType}_recommendation`, `${topicType}_quote`, `${topicType}_summary`];
+      }));
+
+    // Create a set of existing content for quick lookup
+    const existingContent = new Set(
+      existingInsights?.map(insight => `${insight.insight_type}:${insight.content}`) || []
+    );
+
     const insightRows: LLMInsightInsert[] = [];
     
     for (const insight of insights) {
       const topicType = insight.topic.toLowerCase().replace(' ', '_');
       
-      // Store each recommendation as a separate insight
+      // Store each recommendation as a separate insight (check for duplicates)
       for (const recommendation of insight.recommendations) {
+        const key = `${topicType}_recommendation:${recommendation}`;
+        if (!existingContent.has(key)) {
+          insightRows.push({
+            file_id: null,
+            user_id: null,
+            insight_type: `${topicType}_recommendation`,
+            content: recommendation,
+            metadata: {
+              topic: insight.topic,
+              total_mentions: insight.total_mentions,
+              summary: insight.summary
+            }
+          });
+        }
+      }
+      
+      // Store each snippet as a key quote with deduplication
+      for (const snippet of insight.snippets) {
+        const key = `${topicType}_quote:${snippet.text}`;
+        if (!existingContent.has(key)) {
+          insightRows.push({
+            file_id: null,
+            user_id: null,
+            insight_type: `${topicType}_quote`,
+            content: snippet.text,
+            metadata: {
+              topic: insight.topic,
+              chunk_id: snippet.chunk_id,
+              relevance: snippet.relevance
+            }
+          });
+        }
+      }
+      
+      // Store the summary as a highlight (check for duplicates)
+      const summaryKey = `${topicType}_summary:${insight.summary}`;
+      if (!existingContent.has(summaryKey)) {
         insightRows.push({
           file_id: null,
           user_id: null,
-          insight_type: `${topicType}_recommendation`,
-          content: recommendation,
+          insight_type: `${topicType}_summary`,
+          content: insight.summary,
           metadata: {
             topic: insight.topic,
             total_mentions: insight.total_mentions,
-            summary: insight.summary
+            snippet_count: insight.snippets.length
           }
         });
       }
-      
-      // Store each snippet as a key quote (already filtered for relevance >= 4)
-      for (const snippet of insight.snippets) {
-        insightRows.push({
-          file_id: null,
-          user_id: null,
-          insight_type: `${topicType}_quote`,
-          content: snippet.text,
-          metadata: {
-            topic: insight.topic,
-            chunk_id: snippet.chunk_id,
-            relevance: snippet.relevance
-          }
-        });
-      }
-      
-      // Store the summary as a highlight
-      insightRows.push({
-        file_id: null,
-        user_id: null,
-        insight_type: `${topicType}_summary`,
-        content: insight.summary,
-        metadata: {
-          topic: insight.topic,
-          total_mentions: insight.total_mentions,
-          snippet_count: insight.snippets.length
-        }
-      });
     }
     
     if (insightRows.length > 0) {
       await supabase.from('llm_insights').insert(insightRows);
-      console.log(`Stored ${insightRows.length} topic insights in database`);
+      console.log(`Stored ${insightRows.length} new topic insights in database (duplicates filtered)`);
+    } else {
+      console.log('No new insights to store (all were duplicates)');
     }
     
   } catch (error) {

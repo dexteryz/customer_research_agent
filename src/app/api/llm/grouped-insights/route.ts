@@ -134,19 +134,80 @@ async function groupQuotesIntoInsights(topic: string, quotes: Quote[]): Promise<
 
 export async function GET() {
   try {
-    // Call the unified topic analysis API directly instead of HTTP request
-    const { GET: getUnifiedAnalysis } = await import('../unified-topic-analysis/route');
-    const unifiedResponse = await getUnifiedAnalysis();
-    const data = await unifiedResponse.json();
+    // Query database directly to get ALL insights and accurate counts
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
 
-    if (!data.insights || data.insights.length === 0) {
-      return NextResponse.json(data); // Return original data if no insights
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+
+    // Get all insights from database
+    const { data: allInsights, error: insightsError } = await supabase
+      .from('llm_insights')
+      .select('insight_type, content, metadata')
+      .in('insight_type', [
+        'pain_points_recommendation', 'pain_points_quote', 'pain_points_summary',
+        'blockers_recommendation', 'blockers_quote', 'blockers_summary',
+        'customer_requests_recommendation', 'customer_requests_quote', 'customer_requests_summary',
+        'solution_feedback_recommendation', 'solution_feedback_quote', 'solution_feedback_summary'
+      ]);
+
+    if (insightsError || !allInsights || allInsights.length === 0) {
+      return NextResponse.json({ 
+        chartData: [], 
+        insights: [],
+        message: 'No insights found in database' 
+      });
     }
 
     // Process each topic to group quotes into insights
     const enhancedInsights: TopicInsightGrouped[] = [];
+    const topics = ['Pain Points', 'Blockers', 'Customer Requests', 'Solution Feedback'];
 
-    for (const insight of data.insights) {
+    for (const topic of topics) {
+      const topicKey = topic.toLowerCase().replace(' ', '_');
+      const topicInsights = allInsights.filter(insight => 
+        insight.insight_type.startsWith(topicKey)
+      );
+
+      if (topicInsights.length === 0) continue;
+
+      // Get ALL quotes for this topic (not just high-relevance ones)
+      const allQuotes = topicInsights
+        .filter(insight => insight.insight_type.endsWith('_quote'))
+        .map(insight => {
+          const metadata = insight.metadata as Record<string, unknown>;
+          return {
+            text: insight.content,
+            chunk_id: (metadata?.chunk_id as string) || 'unknown',
+            relevance: (metadata?.relevance as number) || 3,
+            source: (metadata?.source as string) || undefined
+          };
+        })
+        .sort((a, b) => b.relevance - a.relevance);
+
+      // Get recommendations
+      const recommendations = topicInsights
+        .filter(insight => insight.insight_type.endsWith('_recommendation'))
+        .map(insight => insight.content)
+        .slice(0, 3);
+
+      // Get summary
+      const summaryInsight = topicInsights.find(insight => 
+        insight.insight_type.endsWith('_summary')
+      );
+      const summary = summaryInsight?.content || `${topic} analysis based on customer feedback`;
+
+      const insight = {
+        topic,
+        summary,
+        snippets: allQuotes,
+        recommendations,
+        total_mentions: allQuotes.length // Use ALL quotes count
+      };
       if (insight.snippets.length === 0) {
         // No quotes to group, create a simple grouped version
         enhancedInsights.push({
@@ -174,8 +235,14 @@ export async function GET() {
     // Store grouped insights in database
     await storeGroupedInsights(enhancedInsights);
 
+    // Build chart data from enhanced insights
+    const chartData = enhancedInsights.map(insight => ({
+      name: insight.topic,
+      value: insight.total_mentions
+    })).sort((a, b) => b.value - a.value);
+
     const response_data: GroupedTopicResponse = {
-      chartData: data.chartData,
+      chartData,
       insights: enhancedInsights
     };
 

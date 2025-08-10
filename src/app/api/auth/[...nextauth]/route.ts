@@ -2,14 +2,14 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets.readonly email profile openid",
+          scope: "https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets.readonly email profile openid",
           access_type: "offline",
           prompt: "consent",
         },
@@ -31,8 +31,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as typeof session.user & { id?: string }).id = token.sub;
       }
-      // Expose accessToken to the client/session
-      (session as any).accessToken = token.accessToken;
+      session.accessToken = token.accessToken as string;
       return session;
     },
   },

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
-import pdfParse from 'pdf-parse';
 import { OpenAIEmbeddings } from '@langchain/openai';
 
 const supabase = createClient(
@@ -26,14 +25,16 @@ export async function POST(req: NextRequest) {
 
   // Upload to Supabase Storage
   const fileName = `${Date.now()}-${file.name}`;
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
   const { data: uploadData, error: uploadError } = await supabase.storage
     .from('uploads')
-    .upload(fileName, file.stream(), {
+    .upload(fileName, buffer, {
       contentType: file.type,
       upsert: false,
     });
   if (uploadError) {
-    return NextResponse.json({ error: 'Upload failed', details: uploadError.message }, { status: 500 });
+    return NextResponse.json({ error: 'Upload failed', details: uploadError.message, stack: uploadError.stack }, { status: 500 });
   }
 
   // Store metadata in DB (assumes a 'uploaded_files' table exists)
@@ -51,13 +52,13 @@ export async function POST(req: NextRequest) {
     .select()
     .single();
   if (metaError) {
-    return NextResponse.json({ error: 'Metadata insert failed', details: metaError.message }, { status: 500 });
+    return NextResponse.json({ error: 'Metadata insert failed', details: metaError.message, stack: metaError.stack }, { status: 500 });
   }
 
   // Download file from Supabase Storage for parsing
   const { data: fileData, error: downloadError } = await supabase.storage.from('uploads').download(uploadData.path);
   if (downloadError) {
-    return NextResponse.json({ error: 'Download failed', details: downloadError.message }, { status: 500 });
+    return NextResponse.json({ error: 'Download failed', details: downloadError.message, stack: downloadError.stack }, { status: 500 });
   }
 
   // Parse file based on type
@@ -72,6 +73,7 @@ export async function POST(req: NextRequest) {
     textContent = workbook.SheetNames.map(name => XLSX.utils.sheet_to_csv(workbook.Sheets[name])).join('\n');
   } else if (file.type === 'application/pdf') {
     const buffer = Buffer.from(await fileData.arrayBuffer());
+    const pdfParse = (await import('pdf-parse')).default;
     const pdf = await pdfParse(buffer);
     textContent = pdf.text;
   } else if (file.type.startsWith('text/')) {
@@ -92,11 +94,22 @@ export async function POST(req: NextRequest) {
   }));
   let insertedChunks = [];
   if (chunkRows.length > 0) {
-    const { data: inserted, error: chunkInsertError } = await supabase.from('file_chunks').insert(chunkRows).select();
-    if (chunkInsertError) {
-      return NextResponse.json({ error: 'Chunk insert failed', details: chunkInsertError.message }, { status: 500 });
+    try {
+      const { data: inserted, error: chunkInsertError } = await supabase.from('file_chunks').insert(chunkRows).select();
+      if (chunkInsertError) {
+        console.error('Chunk insert failed:', {
+          error: chunkInsertError,
+          chunkRows,
+          metaData,
+        });
+        return NextResponse.json({ error: 'Chunk insert failed', details: chunkInsertError.message, stack: chunkInsertError.stack }, { status: 500 });
+      }
+      insertedChunks = inserted;
+    } catch (err) {
+      const errorObj = err as Error;
+      console.error('Exception during chunk insert:', errorObj, { chunkRows, metaData });
+      return NextResponse.json({ error: 'Exception during chunk insert', details: errorObj.message, stack: errorObj.stack }, { status: 500 });
     }
-    insertedChunks = inserted;
   }
 
   // Embed chunks and store in chunk_embeddings table

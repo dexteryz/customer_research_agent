@@ -315,6 +315,23 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
       
       await storeTopicInsights(insights);
       
+      // Trigger grouped insights generation after storing individual insights
+      sendSSE(sseController, {
+        type: 'progress',
+        message: 'Generating grouped insights and recommendations...',
+        progress: 98
+      });
+      
+      try {
+        // Import and call the grouped insights generation
+        const { GET: generateGroupedInsights } = await import('../grouped-insights/route');
+        await generateGroupedInsights();
+        console.log('✨ Group-level insights and recommendations updated');
+      } catch (error) {
+        console.error('Error generating grouped insights:', error);
+        // Don't fail the entire process if grouping fails
+      }
+      
       // Trigger evaluation of new insights by sending a signal
       // This will be picked up by the background worker on its next cycle
       console.log('✨ New insights stored, background evaluations will process them within 2 minutes');

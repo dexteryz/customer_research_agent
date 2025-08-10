@@ -136,8 +136,8 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
       });
     }
 
-    // Process chunks - optimized for streaming mode with timeout considerations
-    const maxChunks = 20; // Reduced to prevent timeouts
+    // Process chunks - increased capacity while maintaining streaming stability
+    const maxChunks = 200; // Increased to handle larger datasets
     const chunksToProcess = chunks.slice(0, maxChunks);
     const validChunks = chunksToProcess.filter(chunk => chunk.content && chunk.content.length >= 50);
     
@@ -150,7 +150,7 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
     });
     
     // Process chunks in parallel batches for better performance and timeout management
-    const batchSize = 3; // Smaller batches to prevent timeouts and connection issues
+    const batchSize = 5; // Optimized batch size for handling larger datasets
     const totalBatches = Math.ceil(validChunks.length / batchSize);
     let processedChunks = 0;
 
@@ -162,7 +162,7 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
       sendSSE(sseController, {
         type: 'progress',
         message: `Processing batch ${currentBatch}/${totalBatches} (${batch.length} chunks) - ${pendingBatches} batches pending`,
-        progress: 30 + (processedChunks / validChunks.length) * 60
+        progress: 30 + (processedChunks / validChunks.length) * 65
       });
 
       try {
@@ -250,7 +250,7 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
         sendSSE(sseController, {
           type: 'progress',
           message: `Batch ${currentBatch} completed: ${successCount}/${batchPromises.length} analyses successful`,
-          progress: 30 + (processedChunks / validChunks.length) * 60
+          progress: 30 + (processedChunks / validChunks.length) * 65
         });
         
         processedChunks += batch.length;
@@ -260,7 +260,7 @@ async function processWithRealStreaming(sseController: ReadableStreamDefaultCont
           sendSSE(sseController, {
             type: 'keepalive',
             message: `Batch ${currentBatch} completed. Preparing next batch...`,
-            progress: 30 + (processedChunks / validChunks.length) * 60
+            progress: 30 + (processedChunks / validChunks.length) * 65
           });
           await new Promise(resolve => setTimeout(resolve, 100)); // Reduced delay
         }

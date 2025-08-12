@@ -128,11 +128,29 @@ export async function GET(req: NextRequest) {
           }
         }
 
+        // Create a better source display
+        let sourceDisplay = 'Unknown Source';
+        if (fileInfo) {
+          // Create short name from filename
+          const shortName = fileInfo.name
+            .replace(/\.(csv|xlsx|pdf|txt|docx)$/i, '') // Remove file extensions
+            .replace(/^\d{4}-\d{2}-\d{2}[-_\s]*/i, '') // Remove date prefixes like "2024-01-01_"
+            .substring(0, 30); // Limit length
+          
+          // Add document type if available and different from filename
+          const docType = fileInfo.document_type;
+          if (docType && docType !== 'unknown' && !fileInfo.name.toLowerCase().includes(docType.toLowerCase())) {
+            sourceDisplay = `${shortName} (${docType})`;
+          } else {
+            sourceDisplay = shortName;
+          }
+        }
+
         return {
           id: insight.id,
           text: insight.content,
           topic: getTopicFromInsightType(insight.insight_type),
-          source_file: fileInfo?.name || 'Unknown Source',
+          source_file: sourceDisplay,
           original_date: chunkInfo?.original_date || null,
           created_at: insight.created_at,
           chunk_id: metadata.chunk_id || '',

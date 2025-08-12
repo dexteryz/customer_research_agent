@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Calendar, FileText, TrendingUp, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Search, Calendar, FileText, TrendingUp, X } from 'lucide-react';
 import type { FilteredSnippet } from '@/app/api/filtered-snippets/route';
 import { getTopicChartColor } from '@/utils/topicUtils';
+import { InteractiveQuote } from './interactive-quote';
 
 interface SnippetsTableViewProps {
   initialFilters?: {
@@ -21,12 +22,11 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDemo, setIsDemo] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalSnippets, setTotalSnippets] = useState(0);
   const [topicFilter, setTopicFilter] = useState<string | null>(initialFilters?.topic || null);
   const [dateFilter, setDateFilter] = useState<string | null>(initialFilters?.date || null);
   
-  const ITEMS_PER_PAGE = 20;
+  const ITEMS_PER_PAGE = 1000; // Show all snippets
   
   // Available topic options
   const topicOptions = ['Pain Points', 'Blockers', 'Customer Requests', 'Solution Feedback'];
@@ -36,7 +36,6 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     if (initialFilters?.topic !== topicFilter || initialFilters?.date !== dateFilter) {
       setTopicFilter(initialFilters?.topic || null);
       setDateFilter(initialFilters?.date || null);
-      setCurrentPage(1);
       setSearchQuery('');
     }
   }, [initialFilters?.topic, initialFilters?.date, topicFilter, dateFilter]);
@@ -80,29 +79,21 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCurrentPage(1);
       fetchSnippets(topicFilter, dateFilter, searchQuery, 1);
     }, 300);
 
     return () => clearTimeout(timer);
   }, [searchQuery, topicFilter, dateFilter]);
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    fetchSnippets(topicFilter, dateFilter, searchQuery, newPage);
-  };
-
   const handleTopicChange = (topic: string) => {
     const newTopic = topic === 'all' ? null : topic;
     setTopicFilter(newTopic);
-    setCurrentPage(1);
     onFiltersChange?.({ topic: newTopic, date: dateFilter });
   };
 
   const handleDateChange = (date: string) => {
     const newDate = date === 'all' ? null : date;
     setDateFilter(newDate);
-    setCurrentPage(1);
     onFiltersChange?.({ topic: topicFilter, date: newDate });
   };
 
@@ -110,11 +101,8 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     setTopicFilter(null);
     setDateFilter(null);
     setSearchQuery('');
-    setCurrentPage(1);
     onFiltersChange?.({ topic: null, date: null });
   };
-
-  const totalPages = Math.ceil(totalSnippets / ITEMS_PER_PAGE);
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', {
@@ -228,20 +216,13 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
         <div className="text-sm text-slate-600">
           {isLoading ? 'Loading...' : (
             <>
-              Showing {Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, totalSnippets)} to {Math.min(currentPage * ITEMS_PER_PAGE, totalSnippets)} of {totalSnippets} snippets
+              {totalSnippets} snippets
               {isDemo && (
                 <span className="ml-2 text-blue-600 font-medium">(Demo Data)</span>
               )}
             </>
           )}
         </div>
-        
-        {/* Pagination Info */}
-        {totalPages > 1 && (
-          <div className="text-sm text-slate-500">
-            Page {currentPage} of {totalPages}
-          </div>
-        )}
       </div>
 
       {/* Snippets Table */}
@@ -263,47 +244,36 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             {snippets.map((snippet, index) => (
               <div 
                 key={snippet.id}
-                className="p-6 hover:bg-slate-50 transition-colors"
+                className="p-6 border-b border-slate-100 last:border-b-0"
               >
-                {/* Snippet Header */}
+                {/* Snippet Number */}
                 <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge 
-                      variant="secondary"
-                      style={{ 
-                        backgroundColor: getTopicChartColor(snippet.topic) + '20',
-                        color: getTopicChartColor(snippet.topic),
-                        borderColor: getTopicChartColor(snippet.topic) + '40'
-                      }}
-                      className="text-xs font-medium"
-                    >
-                      {snippet.topic}
-                    </Badge>
+                  <div className="text-xs text-slate-400 font-medium">
+                    #{index + 1}
                   </div>
-                  <div className="text-xs text-slate-500 text-right">
-                    #{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
-                  </div>
-                </div>
-
-                {/* Snippet Content */}
-                <div className="mb-4">
-                  <p className="text-slate-700 leading-relaxed">
-                    {highlightSearchTerm(snippet.text, searchQuery)}
-                  </p>
-                </div>
-
-                {/* Snippet Metadata */}
-                <div className="flex items-center gap-4 text-xs text-slate-500">
-                  <div className="flex items-center gap-1">
-                    <FileText className="h-3 w-3" />
-                    {snippet.source_file}
-                  </div>
-                  {snippet.original_date && (
+                  <div className="flex items-center gap-4 text-xs text-slate-500">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {formatDate(snippet.original_date)}
+                      <FileText className="h-3 w-3" />
+                      {snippet.source_file}
                     </div>
-                  )}
+                    {snippet.original_date && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {formatDate(snippet.original_date)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Interactive Quote */}
+                <div className="mb-2">
+                  <InteractiveQuote
+                    text={snippet.text}
+                    chunkId={snippet.chunk_id}
+                    relevance={0.8}
+                    topic={snippet.topic}
+                    source={snippet.source_file}
+                  />
                 </div>
               </div>
             ))}
@@ -311,53 +281,6 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
         )}
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-4">
-          <div className="text-sm text-slate-500">
-            {totalSnippets} total snippets
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage <= 1 || isLoading}
-              className="flex items-center gap-1"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Previous
-            </Button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const page = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
-                return (
-                  <Button
-                    key={page}
-                    variant={currentPage === page ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handlePageChange(page)}
-                    disabled={isLoading}
-                    className="w-8 h-8 p-0"
-                  >
-                    {page}
-                  </Button>
-                );
-              })}
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage >= totalPages || isLoading}
-              className="flex items-center gap-1"
-            >
-              Next
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

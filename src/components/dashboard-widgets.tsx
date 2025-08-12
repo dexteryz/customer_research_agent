@@ -12,11 +12,16 @@ import { getTopicChartColor } from '@/utils/topicUtils';
 // Interface moved to contexts/CustomerDataContext.tsx
 
 // Topic Analysis Widget - Chart showing topic frequency
-export function TopicAnalysisWidget() {
+interface TopicAnalysisWidgetProps {
+  onSliceClick?: (topic: string) => void;
+}
+
+export function TopicAnalysisWidget({ onSliceClick }: TopicAnalysisWidgetProps = {}) {
   const [chartData, setChartData] = useState<Array<{name: string, value: number}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState<string | null>(null);
   const [isDemo, setIsDemo] = useState(false);
+  const [hoveredSlice, setHoveredSlice] = useState<string | null>(null);
 
   const fetchData = () => {
     setIsLoading(true);
@@ -130,12 +135,25 @@ export function TopicAnalysisWidget() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={90}
+                  outerRadius={hoveredSlice ? 95 : 90}
                   innerRadius={30}
                   label={false}
+                  onClick={(data) => onSliceClick?.(data.name)}
+                  onMouseEnter={(data) => setHoveredSlice(data.name)}
+                  onMouseLeave={() => setHoveredSlice(null)}
+                  className="cursor-pointer"
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getTopicChartColor(entry.name)} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={getTopicChartColor(entry.name)}
+                      stroke={hoveredSlice === entry.name ? '#374151' : 'transparent'}
+                      strokeWidth={hoveredSlice === entry.name ? 2 : 0}
+                      style={{
+                        filter: hoveredSlice === entry.name ? 'brightness(1.1)' : 'none',
+                        transition: 'all 0.2s ease'
+                      }}
+                    />
                   ))}
                 </Pie>
                 <Tooltip
@@ -146,6 +164,7 @@ export function TopicAnalysisWidget() {
                     fontSize: 14 
                   }}
                   formatter={(value: number) => [value, 'Snippets']}
+                  labelFormatter={(label: string) => onSliceClick ? `${label} (click to view details)` : label}
                 />
                 <Legend 
                   verticalAlign="bottom" 
@@ -277,7 +296,11 @@ export function SummaryStatsWidget() {
 }
 
 // Snippets Timeline Widget - Shows snippet counts over time by topic (stacked bar chart)
-export function SnippetsTimelineWidget() {
+interface SnippetsTimelineWidgetProps {
+  onBarClick?: (date: string, topic?: string) => void;
+}
+
+export function SnippetsTimelineWidget({ onBarClick }: SnippetsTimelineWidgetProps = {}) {
   const [timelineData, setTimelineData] = useState<Array<{
     date: string;
     'Pain Points': number;
@@ -385,7 +408,15 @@ export function SnippetsTimelineWidget() {
       <CardContent>
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={timelineData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <BarChart 
+              data={timelineData} 
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              onClick={(data) => {
+                if (data && data.activeLabel) {
+                  onBarClick?.(data.activeLabel);
+                }
+              }}
+            >
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
               <XAxis 
                 dataKey="date" 
@@ -405,19 +436,41 @@ export function SnippetsTimelineWidget() {
                 }}
                 labelFormatter={(value) => {
                   const date = new Date(value);
-                  return date.toLocaleDateString('en-US', { 
+                  const formattedDate = date.toLocaleDateString('en-US', { 
                     weekday: 'short',
                     month: 'short', 
                     day: 'numeric',
                     year: 'numeric'
                   });
+                  return onBarClick ? `${formattedDate} (click to view details)` : formattedDate;
                 }}
+                cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
               />
               <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-              <Bar dataKey="Pain Points" stackId="a" fill="#ef4444" />
-              <Bar dataKey="Blockers" stackId="a" fill="#f97316" />
-              <Bar dataKey="Customer Requests" stackId="a" fill="#3b82f6" />
-              <Bar dataKey="Solution Feedback" stackId="a" fill="#10b981" />
+              <Bar 
+                dataKey="Pain Points" 
+                stackId="a" 
+                fill="#ef4444"
+                className="cursor-pointer"
+              />
+              <Bar 
+                dataKey="Blockers" 
+                stackId="a" 
+                fill="#f97316"
+                className="cursor-pointer"
+              />
+              <Bar 
+                dataKey="Customer Requests" 
+                stackId="a" 
+                fill="#3b82f6"
+                className="cursor-pointer"
+              />
+              <Bar 
+                dataKey="Solution Feedback" 
+                stackId="a" 
+                fill="#10b981"
+                className="cursor-pointer"
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

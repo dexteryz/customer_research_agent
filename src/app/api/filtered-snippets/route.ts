@@ -103,21 +103,36 @@ export async function GET(req: NextRequest) {
 
         if (metadata.chunk_id) {
           // Get chunk information including original_date
-          const { data: chunkData } = await supabase
+          const { data: chunkData, error: chunkError } = await supabase
             .from('file_chunks')
             .select(`
               id,
               original_date,
-              file_id,
-              uploaded_files(name, document_type)
+              file_id
             `)
             .eq('id', metadata.chunk_id)
             .single();
           
+          if (chunkError) {
+            console.log('Chunk lookup error:', chunkError.message);
+          }
+          
           chunkInfo = chunkData;
-          fileInfo = Array.isArray(chunkData?.uploaded_files) && chunkData.uploaded_files.length > 0 
-            ? chunkData.uploaded_files[0] as { name: string; document_type: string }
-            : null;
+          
+          // Get file information separately
+          if (chunkData?.file_id) {
+            const { data: fileData, error: fileError } = await supabase
+              .from('uploaded_files')
+              .select('name, document_type')
+              .eq('id', chunkData.file_id)
+              .single();
+            
+            if (fileError) {
+              console.log('File lookup error:', fileError.message);
+            }
+            
+            fileInfo = fileData;
+          }
         }
 
         // Filter by date if provided

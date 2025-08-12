@@ -85,14 +85,11 @@ export function InteractiveQuote({ text, source, onTriggerChat }: InteractiveQuo
           <blockquote className="inline">
             &ldquo;{text}&rdquo;
           </blockquote>
-          {source && (
-            <span className="text-slate-500 font-medium ml-2">— {source}</span>
-          )}
         </div>
         
         {/* Hover Actions */}
         {isHovered && (
-          <div className="absolute -right-2 top-0 flex gap-1 bg-white rounded-lg shadow-lg border border-slate-200 p-1 z-10">
+          <div className="absolute right-0 top-0 flex gap-1 bg-white rounded-lg shadow-lg border border-slate-200 p-1 z-10">
             <Button
               variant="ghost"
               size="sm"

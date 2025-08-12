@@ -329,7 +329,11 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
         {!isLoading && totalSnippets > ITEMS_PER_PAGE && (
           <div className="flex items-center gap-2">
             <div className="text-sm text-slate-600">
-              Page {currentPage} of {Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
+              {(() => {
+                const startResult = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+                const endResult = Math.min(currentPage * ITEMS_PER_PAGE, totalSnippets);
+                return `Results ${startResult}-${endResult}`;
+              })()}
             </div>
             <div className="flex items-center gap-1">
               <Button

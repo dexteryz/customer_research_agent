@@ -41,7 +41,7 @@ function DashboardWidgetsGrid() {
   
   // Tab and filter state for insights
   const [insightsTab, setInsightsTab] = useState<'insights' | 'snippets'>('insights');
-  const [tabFilters, setTabFilters] = useState<{ topic?: string | null; date?: string | null }>({});
+  const [tabFilters, setTabFilters] = useState<{ topic?: string | null; date?: string | null; startDate?: string | null; endDate?: string | null }>({});
 
   // Check if data is available (simplified since widgets handle their own data now)
   async function checkDataAvailability() {
@@ -147,13 +147,13 @@ function DashboardWidgetsGrid() {
 
   // Handle topic slice click from pie chart
   function handleTopicClick(topic: string) {
-    setTabFilters({ topic, date: null });
+    setTabFilters({ topic, date: null, startDate: null, endDate: null });
     setInsightsTab('snippets');
   }
 
   // Handle bar click from timeline chart
   function handleDateClick(date: string) {
-    setTabFilters({ topic: null, date });
+    setTabFilters({ topic: null, date: null, startDate: date, endDate: null });
     setInsightsTab('snippets');
   }
 

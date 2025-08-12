@@ -18,6 +18,8 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const topic = searchParams.get('topic');
     const date = searchParams.get('date');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
     const search = searchParams.get('search');
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
@@ -144,10 +146,26 @@ export async function GET(req: NextRequest) {
         }
 
         // Filter by date if provided
-        if (date && chunkInfo?.original_date) {
-          const snippetDate = new Date(chunkInfo.original_date).toISOString().split('T')[0];
-          if (snippetDate !== date) {
-            return null; // Filter out this snippet
+        if ((date || startDate || endDate) && chunkInfo?.original_date) {
+          const snippetDate = new Date(chunkInfo.original_date);
+          const snippetDateStr = snippetDate.toISOString().split('T')[0];
+          
+          // Single date filter
+          if (date && snippetDateStr !== date) {
+            return null;
+          }
+          
+          // Date range filter
+          if (startDate || endDate) {
+            const startDateTime = startDate ? new Date(startDate) : null;
+            const endDateTime = endDate ? new Date(endDate) : null;
+            
+            if (startDateTime && snippetDate < startDateTime) {
+              return null;
+            }
+            if (endDateTime && snippetDate > endDateTime) {
+              return null;
+            }
           }
         }
 
@@ -193,6 +211,8 @@ export async function GET(req: NextRequest) {
       filters: {
         topic,
         date,
+        startDate,
+        endDate,
         search
       }
     });

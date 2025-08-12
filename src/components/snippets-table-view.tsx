@@ -12,8 +12,10 @@ interface SnippetsTableViewProps {
   initialFilters?: {
     topic?: string | null;
     date?: string | null;
+    startDate?: string | null;
+    endDate?: string | null;
   };
-  onFiltersChange?: (filters: { topic?: string | null; date?: string | null }) => void;
+  onFiltersChange?: (filters: { topic?: string | null; date?: string | null; startDate?: string | null; endDate?: string | null }) => void;
 }
 
 export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsTableViewProps) {
@@ -24,6 +26,8 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
   const [totalSnippets, setTotalSnippets] = useState(0);
   const [topicFilter, setTopicFilter] = useState<string | null>(initialFilters?.topic || null);
   const [dateFilter, setDateFilter] = useState<string | null>(initialFilters?.date || null);
+  const [startDate, setStartDate] = useState<string | null>(initialFilters?.startDate || null);
+  const [endDate, setEndDate] = useState<string | null>(initialFilters?.endDate || null);
   
   const ITEMS_PER_PAGE = 1000; // Show all snippets
   
@@ -32,24 +36,33 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
 
   // Update filters when initialFilters change
   useEffect(() => {
-    if (initialFilters?.topic !== topicFilter || initialFilters?.date !== dateFilter) {
+    if (initialFilters?.topic !== topicFilter || 
+        initialFilters?.date !== dateFilter ||
+        initialFilters?.startDate !== startDate ||
+        initialFilters?.endDate !== endDate) {
       setTopicFilter(initialFilters?.topic || null);
       setDateFilter(initialFilters?.date || null);
+      setStartDate(initialFilters?.startDate || null);
+      setEndDate(initialFilters?.endDate || null);
       setSearchQuery('');
     }
-  }, [initialFilters?.topic, initialFilters?.date, topicFilter, dateFilter]);
+  }, [initialFilters?.topic, initialFilters?.date, initialFilters?.startDate, initialFilters?.endDate, topicFilter, dateFilter, startDate, endDate]);
 
   const fetchSnippets = async (
     topic?: string | null, 
     date?: string | null, 
     search: string = '',
-    page: number = 1
+    page: number = 1,
+    startDate?: string | null,
+    endDate?: string | null
   ) => {
     setIsLoading(true);
     try {
       const params = new URLSearchParams();
       if (topic) params.append('topic', topic);
       if (date) params.append('date', date);
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
       if (search.trim()) params.append('search', search.trim());
       params.append('limit', ITEMS_PER_PAGE.toString());
       params.append('offset', ((page - 1) * ITEMS_PER_PAGE).toString());
@@ -71,18 +84,18 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
 
   // Fetch snippets when filters change (not search - search has its own debounced effect)
   useEffect(() => {
-    fetchSnippets(topicFilter, dateFilter, '', 1);
+    fetchSnippets(topicFilter, dateFilter, '', 1, startDate, endDate);
     setSearchQuery(''); // Clear search when filters change
-  }, [topicFilter, dateFilter]);
+  }, [topicFilter, dateFilter, startDate, endDate]);
 
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchSnippets(topicFilter, dateFilter, searchQuery, 1);
+      fetchSnippets(topicFilter, dateFilter, searchQuery, 1, startDate, endDate);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, topicFilter, dateFilter]);
+  }, [searchQuery, topicFilter, dateFilter, startDate, endDate]);
 
   const handleTopicChange = (topic: string) => {
     const newTopic = topic === 'all' ? null : topic;
@@ -90,17 +103,24 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     onFiltersChange?.({ topic: newTopic, date: dateFilter });
   };
 
-  const handleDateChange = (date: string) => {
-    const newDate = date === 'all' ? null : date;
-    setDateFilter(newDate);
-    onFiltersChange?.({ topic: topicFilter, date: newDate });
-  };
 
   const clearFilters = () => {
     setTopicFilter(null);
     setDateFilter(null);
+    setStartDate(null);
+    setEndDate(null);
     setSearchQuery('');
-    onFiltersChange?.({ topic: null, date: null });
+    onFiltersChange?.({ topic: null, date: null, startDate: null, endDate: null });
+  };
+
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date || null);
+    onFiltersChange?.({ topic: topicFilter, date: null, startDate: date || null, endDate });
+  };
+
+  const handleEndDateChange = (date: string) => {
+    setEndDate(date || null);
+    onFiltersChange?.({ topic: topicFilter, date: null, startDate, endDate: date || null });
   };
 
   const formatDate = (dateStr: string) => {
@@ -110,6 +130,23 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
       day: 'numeric',
       year: 'numeric'
     });
+  };
+
+  const highlightSearchTerms = (text: string, searchTerm: string) => {
+    if (!searchTerm.trim()) return text;
+    
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <strong key={index} className="bg-yellow-200 font-bold">
+          {part}
+        </strong>
+      ) : (
+        part
+      )
+    );
   };
 
 
@@ -143,19 +180,38 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             ))}
           </select>
 
-          {/* Date Filter - Simple text input for now */}
-          <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input
-              placeholder="Date (YYYY-MM-DD)"
-              value={dateFilter || ''}
-              onChange={(e) => handleDateChange(e.target.value)}
-              className="pl-10 pr-4 w-48"
-            />
+          {/* Date Range Filters */}
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-slate-400" />
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <Input
+                  type="date"
+                  placeholder="Start Date"
+                  value={startDate || ''}
+                  onChange={(e) => handleStartDateChange(e.target.value)}
+                  className="w-36 text-xs"
+                />
+                <div className="absolute -bottom-5 left-0 text-xs text-slate-400">From</div>
+              </div>
+              
+              <div className="text-xs text-slate-500">to</div>
+              
+              <div className="relative">
+                <Input
+                  type="date"
+                  placeholder="End Date"
+                  value={endDate || ''}
+                  onChange={(e) => handleEndDateChange(e.target.value)}
+                  className="w-36 text-xs"
+                />
+                <div className="absolute -bottom-5 left-0 text-xs text-slate-400">To</div>
+              </div>
+            </div>
           </div>
 
           {/* Clear Filters */}
-          {(topicFilter || dateFilter || searchQuery) && (
+          {(topicFilter || startDate || endDate || searchQuery) && (
             <Button 
               variant="secondary" 
               onClick={clearFilters}
@@ -173,22 +229,38 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             <Badge 
               variant="secondary" 
               style={{ borderColor: getTopicChartColor(topicFilter), color: getTopicChartColor(topicFilter) }}
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => handleTopicChange('')}
             >
               <TrendingUp className="h-3 w-3" />
               {topicFilter}
+              <X className="h-3 w-3 ml-1" />
             </Badge>
           )}
-          {dateFilter && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+          {(startDate || endDate) && (
+            <Badge 
+              variant="secondary" 
+              className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => {
+                setStartDate(null);
+                setEndDate(null);
+                onFiltersChange?.({ topic: topicFilter, date: null, startDate: null, endDate: null });
+              }}
+            >
               <Calendar className="h-3 w-3" />
-              {formatDate(dateFilter)}
+              {startDate ? formatDate(startDate) : 'Start'} - {endDate ? formatDate(endDate) : 'End'}
+              <X className="h-3 w-3 ml-1" />
             </Badge>
           )}
           {searchQuery && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge 
+              variant="secondary" 
+              className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setSearchQuery('')}
+            >
               <Search className="h-3 w-3" />
               &ldquo;{searchQuery}&rdquo;
+              <X className="h-3 w-3 ml-1" />
             </Badge>
           )}
         </div>
@@ -252,7 +324,7 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
                     {/* Snippet Column */}
                     <div className="col-span-6">
                       <div className="text-sm text-slate-800 leading-relaxed">
-                        {snippet.text}
+                        {highlightSearchTerms(snippet.text, searchQuery)}
                       </div>
                     </div>
                     

@@ -19,10 +19,8 @@ export function InsightsTabs({ initialTab = 'insights', initialFilters }: Insigh
 
   // Update tab when initialTab changes
   useEffect(() => {
-    if (initialTab !== activeTab) {
-      setActiveTab(initialTab);
-    }
-  }, [initialTab, activeTab]);
+    setActiveTab(initialTab);
+  }, [initialTab]);
 
   // Update filters when initialFilters change
   useEffect(() => {

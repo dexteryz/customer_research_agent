@@ -106,11 +106,19 @@ export async function GET(req: NextRequest) {
       console.error('Error counting snippets:', countError);
     }
 
-    // Execute the main query with pagination
-    const { data: insights, error } = await query
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1)
-      .limit(limit);
+    // For date filtering, we need to get ALL results since filtering happens after query
+    // This ensures we don't miss any matching snippets due to pagination happening before filtering
+    const shouldGetAllResults = startDate || endDate || noDate;
+
+    // Execute the main query
+    const { data: insights, error } = shouldGetAllResults ?
+      // Get all results when date filtering (no pagination at DB level)
+      await query.order('created_at', { ascending: false }) :
+      // Use normal pagination when no date filtering
+      await query
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1)
+        .limit(limit);
 
     if (error) {
       console.error('Error fetching filtered snippets:', {
@@ -259,25 +267,33 @@ export async function GET(req: NextRequest) {
 
     // Filter out null results (date mismatches)
     const filteredSnippets = snippetsWithContext.filter(Boolean) as FilteredSnippet[];
-
-    // For date filtering, calculate the correct total
-    let actualTotal = totalCount || filteredSnippets.length;
     
-    // When date filters are active, the totalCount from database doesn't reflect 
-    // the actual filtered results because date filtering happens after the query
-    if (startDate || endDate || noDate) {
-      // Use a simple approach: if this is the first page and we have fewer results
-      // than the page limit, then the total is just the filtered results
-      if (offset === 0 && filteredSnippets.length < limit) {
-        actualTotal = filteredSnippets.length;
-      } else {
-        // For subsequent pages or full first pages, we need a more accurate count
-        // For now, use the pre-filter count as an approximation
-        // This is a known limitation - accurate pagination with date filters
-        // would require more complex querying
-        actualTotal = totalCount || filteredSnippets.length;
-      }
+    // Apply pagination after date filtering when date filters are active
+    if (shouldGetAllResults) {
+      const actualTotal = filteredSnippets.length;
+      
+      // Apply pagination to the already-filtered results
+      const startIndex = offset;
+      const endIndex = offset + limit;
+      const paginatedSnippets = filteredSnippets.slice(startIndex, endIndex);
+      
+      return NextResponse.json({
+        snippets: paginatedSnippets,
+        total: actualTotal,
+        isDemo: false,
+        filters: {
+          topic,
+          date,
+          startDate,
+          endDate,
+          noDate,
+          search
+        }
+      });
     }
+
+    // For non-date filtering, use the standard approach
+    const actualTotal = totalCount || filteredSnippets.length;
 
     return NextResponse.json({
       snippets: filteredSnippets,

@@ -62,32 +62,41 @@ RESPONSE FORMAT (JSON only):
 
 If no emotional pain points exist, return: {"relevance_score": 0, "snippets": [], "recommendations": []}`,
 
-  'Blockers': `Analyze the following customer feedback specifically for IMPLEMENTATION BLOCKERS - concrete obstacles that prevent customers from completing specific tasks, achieving their goals, or implementing solutions. Focus ONLY on actionable blockers, not general frustrations.
+  'Blockers': `Analyze the following customer feedback specifically for CONCRETE BLOCKERS - specific obstacles that prevent progress despite high motivation or desire to act. These must be external barriers, NOT internal feelings or general dissatisfaction.
 
 CUSTOMER FEEDBACK:
 "{content}"
 
-IMPLEMENTATION BLOCKER CRITERIA:
-- Technical barriers preventing task completion (APIs not working, integrations failing, system limitations)
-- Process obstacles stopping workflow progression (missing permissions, broken workflows, dependency issues) 
-- Resource constraints blocking implementation (missing tools, insufficient access, capability gaps)
-- System limitations preventing goal achievement (performance bottlenecks, compatibility issues, feature gaps that block specific use cases)
+CONCRETE BLOCKER CRITERIA (must meet ALL):
+1. Customer shows clear DESIRE/INTENT to accomplish something specific
+2. External obstacle PREVENTS them from taking action or making progress
+3. Obstacle is specific and actionable (not vague feelings or general complaints)
 
-EXCLUDE general complaints, wishes, or pain points that don't prevent specific goal completion.
+QUALIFY AS BLOCKERS:
+- Technical barriers: "I can't access X because Y doesn't work", "System won't let me do Z"  
+- Process obstacles: "I need X approval but can't get it", "Required step is missing/broken"
+- Resource constraints: "I don't have the tools to complete X", "Missing required information for Y"
+- Capability gaps: "I don't know how to do X", "I need training on Y to proceed"
+
+DO NOT QUALIFY (these are Pain Points, not Blockers):
+- General frustrations: "This is annoying", "I don't like X"
+- Emotional reactions: "I'm overwhelmed", "This is stressful" 
+- Complaints without intent: "X is bad", "Y doesn't work well"
+- Wishes without action: "I wish we had X", "It would be nice if Y"
 
 TASKS:
-1. Identify if this feedback contains specific IMPLEMENTATION BLOCKERS (score 1-5, where 5 = critical blocker preventing goal completion, 1 = minor implementation obstacle)
-2. If score >= 4, extract 1-2 most specific quotes that describe what the customer CANNOT DO or CANNOT COMPLETE
-3. Generate 2-3 precise, technical recommendations to remove these implementation barriers
+1. Identify if this feedback contains a CONCRETE BLOCKER (score 1-5, where 5 = clear intent blocked by specific obstacle, 1 = vague obstacle)
+2. If score >= 4, extract 1-2 most specific quotes showing: WHAT they want to do + WHAT prevents them
+3. Generate 2-3 specific recommendations to remove these blocking obstacles
 
 RESPONSE FORMAT (JSON only):
 {
   "relevance_score": number,
-  "snippets": [{"text": "quote showing what customer cannot complete/implement", "relevance": number}],
-  "recommendations": ["specific technical solution to remove implementation barrier"]
+  "snippets": [{"text": "quote showing desired action + blocking obstacle", "relevance": number}],
+  "recommendations": ["specific solution to remove the blocking obstacle"]
 }
 
-If no implementation blockers exist, return: {"relevance_score": 0, "snippets": [], "recommendations": []}`,
+If no concrete blockers exist, return: {"relevance_score": 0, "snippets": [], "recommendations": []}`,
 
   'Customer Requests': `Analyze the following customer feedback specifically for EXPLICIT PRODUCT/SERVICE REQUESTS - concrete asks for new features, enhancements, services, or program improvements. Focus ONLY on specific, actionable requests.
 
@@ -204,19 +213,17 @@ async function analyzeTopicWithLLM(content: string, chunkId: string, topic: stri
 }
 
 function generateTopicSummary(topic: string, totalMentions: number): string {
-  const templates = {
-    'Pain Points': 'Customer pain point analysis reveals',
-    'Blockers': 'Implementation blocker feedback shows', 
-    'Customer Requests': 'Feature request analysis indicates',
-    'Solution Feedback': 'Solution effectiveness feedback demonstrates'
+  const definitions = {
+    'Pain Points': 'Emotional frustrations, stress, confusion, and negative experiences that affect user satisfaction. Focus on feelings and experience quality rather than implementation barriers.',
+    'Blockers': 'Specific obstacles that prevent progress despite high customer motivation or desire to act. Must show clear intent blocked by external barriers, not general complaints.',
+    'Customer Requests': 'Explicit asks for new features, enhancements, services, or program improvements. Concrete requests with specific implementation language like "add", "provide", or "build".',
+    'Solution Feedback': 'Feedback on existing solutions, how well current features work, and user experience with current offerings. Evaluates what\'s already implemented.'
   };
   
-  const template = templates[topic as keyof typeof templates] || 'Customer feedback shows';
+  const definition = definitions[topic as keyof typeof definitions] || 'Customer feedback in this category.';
   
-  if (totalMentions === 0) return `${template} no specific feedback in this category.`;
-  if (totalMentions === 1) return `${template} focused feedback around this theme.`;
-  if (totalMentions <= 3) return `${template} some key insights in this area.`;
-  return `${template} significant discussion across ${totalMentions} customer touchpoints.`;
+  if (totalMentions === 0) return `No specific ${topic.toLowerCase()} found in customer feedback.`;
+  return definition;
 }
 
 // Store insights in Supabase with proper categorization
@@ -448,12 +455,8 @@ export async function processTopicAnalysis() {
             value: totalMentions
           });
             
-          const summaryInsight = topicInsights.find(insight => 
-            insight.insight_type.endsWith('_summary')
-          );
-          
-          const summary = summaryInsight?.content || 
-            generateTopicSummary(topic, totalMentions);
+          // Always use the updated definitions instead of cached summaries
+          const summary = generateTopicSummary(topic, totalMentions);
           
           insights.push({
             topic,

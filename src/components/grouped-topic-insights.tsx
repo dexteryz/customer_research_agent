@@ -9,7 +9,7 @@ import { getTopicColor, getTopicIcon } from '@/utils/topicUtils';
 
 interface GroupedInsight {
   insight_statement: string;
-  quotes: Array<{
+  snippets: Array<{
     text: string;
     chunk_id: string;
     relevance: number;
@@ -23,7 +23,7 @@ interface TopicInsightGrouped {
   summary: string;
   grouped_insights: GroupedInsight[];
   recommendations: string[];
-  total_mentions: number;
+  total_snippets: number;
 }
 
 
@@ -136,7 +136,7 @@ export function GroupedTopicInsightsWidget() {
   // Moved to utils/topicUtils.ts
 
   const getTotalQuotes = (insights: GroupedInsight[]) => {
-    return insights.reduce((total, insight) => total + insight.quotes.length, 0);
+    return insights.reduce((total, insight) => total + insight.snippets.length, 0);
   };
 
   if (isLoading) {
@@ -188,33 +188,26 @@ export function GroupedTopicInsightsWidget() {
   }
 
   return (
-    <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-indigo-50 to-indigo-100">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-indigo-500" />
-          Customer Feedback Insights
-          {isDemo && (
-            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-              Demo Data
-            </span>
-          )}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {data.map((topicData, topicIndex) => (
-            <div key={topicIndex} className={`p-4 border rounded-lg ${getTopicColor(topicData.topic)}`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{getTopicIcon(topicData.topic)}</span>
-                  <h3 className="font-semibold text-slate-800">{topicData.topic}</h3>
-                </div>
-                <Badge variant="secondary" className="text-xs">
-                  {getTotalQuotes(topicData.grouped_insights)} mentions
-                </Badge>
-              </div>
-              
-              <p className="text-sm text-slate-700 mb-4 italic">{topicData.summary}</p>
+    <div className="space-y-6">
+      {data.map((topicData, topicIndex) => (
+        <Card key={topicIndex} className={`w-full shadow-sm ${getTopicColor(topicData.topic)}`}>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+              <span className="text-lg">{getTopicIcon(topicData.topic)}</span>
+              {topicData.topic}
+              <Badge variant="secondary" className="ml-auto text-xs">
+                {topicData.total_snippets} snippets
+              </Badge>
+              {isDemo && (
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                  Demo Data
+                </span>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <p className="text-sm text-slate-700 italic">{topicData.summary}</p>
               
               <div className="space-y-4">
                 {/* Grouped Insights Section */}
@@ -235,7 +228,7 @@ export function GroupedTopicInsightsWidget() {
                             </>
                           ) : (
                             <>
-                              Show all {getTotalQuotes(topicData.grouped_insights)} mentions <ChevronDown className="h-3 w-3" />
+                              Show all {topicData.total_snippets} snippets <ChevronDown className="h-3 w-3" />
                             </>
                           )}
                         </button>
@@ -251,7 +244,7 @@ export function GroupedTopicInsightsWidget() {
                       return insightsToShow.map((insight, insightIndex) => {
                         const insightKey = `${topicData.topic}-${insightIndex}`;
                         const isInsightExpanded = expandedInsights.has(insightKey);
-                        const quotesToShow = isInsightExpanded ? insight.quotes : insight.quotes.slice(0, 2);
+                        const snippetsToShow = isInsightExpanded ? insight.snippets : insight.snippets.slice(0, 2);
                         
                         return (
                           <div key={insightIndex} className="border border-slate-200 rounded-lg p-3 bg-white/60">
@@ -269,9 +262,9 @@ export function GroupedTopicInsightsWidget() {
                             <div className="ml-4 space-y-2">
                               <div className="flex items-center justify-between">
                                 <span className="text-xs text-slate-500 font-medium">
-                                  Supporting quotes ({insight.quotes.length}):
+                                  Supporting snippets ({insight.snippets.length}):
                                 </span>
-                                {insight.quotes.length > 2 && (
+                                {insight.snippets.length > 2 && (
                                   <button
                                     onClick={() => toggleInsightExpansion(insightKey)}
                                     className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
@@ -282,20 +275,20 @@ export function GroupedTopicInsightsWidget() {
                                       </>
                                     ) : (
                                       <>
-                                        +{insight.quotes.length - 2} more <ChevronDown className="h-3 w-3" />
+                                        +{insight.snippets.length - 2} more <ChevronDown className="h-3 w-3" />
                                       </>
                                     )}
                                   </button>
                                 )}
                               </div>
-                              {quotesToShow.map((quote, quoteIndex) => (
-                                <div key={quoteIndex} className="pl-2 border-l-2 border-slate-200">
+                              {snippetsToShow.map((snippet, snippetIndex) => (
+                                <div key={snippetIndex} className="pl-2 border-l-2 border-slate-200">
                                   <InteractiveQuote
-                                    text={quote.text}
-                                    chunkId={quote.chunk_id}
-                                    relevance={quote.relevance}
+                                    text={snippet.text}
+                                    chunkId={snippet.chunk_id}
+                                    relevance={snippet.relevance}
                                     topic={topicData.topic}
-                                    source={quote.source}
+                                    source={snippet.source}
                                   />
                                 </div>
                               ))}
@@ -327,12 +320,12 @@ export function GroupedTopicInsightsWidget() {
                 )}
               </div>
             </div>
-          ))}
-        </div>
-        <div className="mt-4 text-xs text-slate-600 text-center">
-          Insights automatically grouped from customer feedback • Powered by AI analysis
-        </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      ))}
+      <div className="mt-4 text-xs text-slate-600 text-center">
+        Insights automatically grouped from customer feedback • Powered by AI analysis
+      </div>
+    </div>
   );
 }

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev --turbopack\" \"npm run dev:worker\"",
+    "dev": "next dev --turbopack",
     "dev:server": "next dev --turbopack",
     "dev:worker": "npx ts-node scripts/eval-insights-worker.ts",
     "build": "next build",

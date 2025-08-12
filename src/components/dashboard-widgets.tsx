@@ -63,7 +63,7 @@ export function TopicAnalysisWidget() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-slate-500" />
-            Topic Analysis
+            Snippets by Topic
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -79,7 +79,7 @@ export function TopicAnalysisWidget() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-slate-500" />
-            Topic Analysis
+            Snippets by Topic
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -95,7 +95,7 @@ export function TopicAnalysisWidget() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-slate-500" />
-            Topic Analysis
+            Snippets by Topic
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -112,7 +112,7 @@ export function TopicAnalysisWidget() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-blue-500" />
-          Topic Analysis
+          Snippets by Topic
           {isDemo && (
             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
               Demo Data
@@ -125,7 +125,7 @@ export function TopicAnalysisWidget() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-700">{total}</div>
-              <div className="text-sm text-slate-600">Total Mentions</div>
+              <div className="text-sm text-slate-600">Total Snippets</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-700">{chartData.length}</div>
@@ -135,13 +135,13 @@ export function TopicAnalysisWidget() {
           
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                 <XAxis 
                   dataKey="name" 
                   tick={{ fontSize: 12, fill: '#475569' }}
                   angle={-45}
                   textAnchor="end"
-                  height={60}
+                  height={80}
                 />
                 <YAxis tick={{ fontSize: 12, fill: '#475569' }} />
                 <Tooltip

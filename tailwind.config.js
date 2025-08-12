@@ -5,6 +5,13 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'bg-red-50', 'border-red-200',
+    'bg-orange-50', 'border-orange-200',
+    'bg-blue-50', 'border-blue-200',
+    'bg-green-50', 'border-green-200',
+    'bg-slate-50', 'border-slate-200'
+  ],
   theme: {
     extend: {
       colors: {

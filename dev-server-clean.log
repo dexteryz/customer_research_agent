@@ -1,0 +1,1117 @@
+
+> web@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.5 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.11.164.13:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1096ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.9s
+ GET / 200 in 3321ms
+ ○ Compiling /api/customer-data ...
+ ✓ Compiled /api/customer-data in 572ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 662ms
+ GET /api/customer-data 200 in 1088ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session 200 in 1104ms
+ GET /api/customer-data 200 in 425ms
+ ○ Compiling /api/llm/unified-topic-analysis ...
+ ✓ Compiled /api/llm/unified-topic-analysis in 596ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 714ms
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 356ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 1105ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 452ms
+ HEAD / 200 in 46ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 621ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 847ms
+ GET / 200 in 112ms
+ GET /api/auth/session 200 in 91ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 286ms
+ GET /api/customer-data 200 in 563ms
+ GET /api/customer-data 200 in 356ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 352ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 302ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 661ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 382ms
+ GET / 200 in 43ms
+ GET /api/auth/session 200 in 99ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 284ms
+ GET /api/customer-data 200 in 478ms
+ GET /api/customer-data 200 in 363ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 312ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 385ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 322ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 450ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 485ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 504ms
+ GET /api/auth/session 200 in 189ms
+ GET / 200 in 110ms
+ GET /api/auth/session 200 in 76ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 244ms
+ GET /api/customer-data 200 in 2336ms
+ GET /api/customer-data 200 in 1058ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 736ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 1361ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 790ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 1657ms
+ GET /api/auth/session 200 in 123ms
+ ✓ Compiled in 505ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /api/auth/session 200 in 49ms
+ ✓ Compiled in 131ms
+ GET / 200 in 627ms
+ GET /api/customer-data 200 in 645ms
+ GET /api/auth/session 200 in 184ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 344ms
+ GET /api/customer-data 200 in 1316ms
+ GET /api/customer-data 200 in 554ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 393ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 554ms
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 312ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 786ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 2323ms
+ GET / 200 in 116ms
+ GET / 200 in 69ms
+ GET /api/auth/session 200 in 82ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 573ms
+ GET /api/customer-data 200 in 904ms
+ GET /api/customer-data 200 in 430ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 299ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 690ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 629ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 521ms
+ GET / 200 in 120ms
+ GET /api/auth/session 200 in 70ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 271ms
+ GET /api/customer-data 200 in 527ms
+ GET /api/customer-data 200 in 414ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 372ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 495ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 280ms
+Found 123 chunks for unified topic analysis
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 387ms
+ GET /api/auth/session 200 in 40ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 565ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 338ms
+ GET / 200 in 58ms
+ GET /api/auth/session 200 in 136ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 320ms
+ GET /api/customer-data 200 in 594ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+ GET /api/customer-data 200 in 692ms
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 358ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 455ms
+Unified topic analysis API called
+Environment check: Supabase URL exists: true
+Environment check: Supabase Key exists: true
+Environment check: Claude API Key exists: true
+Found 123 chunks for unified topic analysis
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 327ms
+Found 360 existing insights in database, building response from real data
+Built response from existing insights: 4 topics, 4 detailed insights
+ GET /api/llm/unified-topic-analysis 200 in 338ms
+Retrieved 4 grouped topic insights from database
+ GET /api/llm/stored-grouped-insights 200 in 639ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1146ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xh2gvbrw87'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xh2gvbrw87'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.qb42gmr5x1'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.qb42gmr5x1'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.vam3dh6fvsj'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.vam3dh6fvsj'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.s05c9n4ox9'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.s05c9n4ox9'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0bz4tom3kwnn'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0bz4tom3kwnn'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.gcdn92mcjmd'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.gcdn92mcjmd'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0bo5m1y3wf2'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0bo5m1y3wf2'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.vibg5v5acvs'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.vibg5v5acvs'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xp5iho57zm'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xp5iho57zm'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.901gyh65os9'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.901gyh65os9'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.3kmgglxeioy'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.3kmgglxeioy'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xhf3xgjq9q'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.xhf3xgjq9q'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.ssxl9uwob9l'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.ssxl9uwob9l'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.55njehrkzbj'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.55njehrkzbj'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.oupz34538go'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.oupz34538go'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.a0tc6xkzp7d'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.a0tc6xkzp7d'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.9rgiwbi7yua'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.9rgiwbi7yua'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.89malo7j3y8'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.89malo7j3y8'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.g6gkzguh30g'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.g6gkzguh30g'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.wjrza3x09ns'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.wjrza3x09ns'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.lebyle5o89n'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.lebyle5o89n'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.m9yyvt5rp0n'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.m9yyvt5rp0n'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.b85y0b2yza4'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.b85y0b2yza4'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.t0ygdf9r5vb'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.t0ygdf9r5vb'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.diahac8idom'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.diahac8idom'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.a5ibjxeyngv'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.a5ibjxeyngv'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.kj9nr1i1th'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.kj9nr1i1th'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.2ev12nndm0u'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.2ev12nndm0u'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.u6gwig6qjk'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.u6gwig6qjk'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.jpm08e8yl69'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.jpm08e8yl69'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.omile6lh6q'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.omile6lh6q'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0wqd365i9cd'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.0wqd365i9cd'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.4wm5613bvsj'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/static/development/_buildManifest.js.tmp.4wm5613bvsj'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/api/llm/stored-grouped-insights/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/dexter/Dropbox/0 Work/Projects/Apps/customer_research_agent/web/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}
+[?25h
+npm notice 
+npm notice New major version of npm available! 9.8.1 -> 11.5.2
+npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.5.2>
+npm notice Run `npm install -g npm@11.5.2` to update!
+npm notice 

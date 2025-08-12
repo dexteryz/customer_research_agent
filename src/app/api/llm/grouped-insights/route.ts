@@ -4,7 +4,7 @@ import { ChatAnthropic } from '@langchain/anthropic';
 
 interface GroupedInsight {
   insight_statement: string;
-  quotes: Array<{
+  snippets: Array<{
     text: string;
     chunk_id: string;
     relevance: number;
@@ -18,7 +18,7 @@ interface TopicInsightGrouped {
   summary: string;
   grouped_insights: GroupedInsight[];
   recommendations: string[];
-  total_mentions: number;
+  total_snippets: number;
 }
 
 interface GroupedTopicResponse {
@@ -27,13 +27,13 @@ interface GroupedTopicResponse {
 }
 
 // Enhanced prompt for grouping quotes into insights
-const GROUPING_PROMPT = `You are analyzing customer feedback quotes to group them into common insights. For each topic category, group related quotes together and create synthesized insight statements.
+const GROUPING_PROMPT = `You are analyzing customer feedback snippets to group them into common insights. For each topic category, group related snippets together and create synthesized insight statements.
 
 INSTRUCTIONS:
-1. Group similar quotes that express the same underlying insight or concern
+1. Group similar snippets that express the same underlying insight or concern
 2. Create a clear, actionable insight statement for each group (1-2 sentences)
 3. Generate 2-3 specific, actionable recommendations for each insight group
-4. Each group should contain 2-8 related quotes that support the same insight
+4. Each group should contain 2-8 related snippets that support the same insight
 5. Insight statements should be specific and actionable, not generic
 6. Recommendations should be concrete actions that directly address the grouped insight
 7. Focus on the customer's perspective and pain points
@@ -66,7 +66,7 @@ Make sure insight statements are:
 - Specific to the customer experience
 - Actionable for product teams
 - Distinct from each other
-- Supported by multiple quotes when possible`;
+- Supported by multiple snippets when possible`;
 
 interface Quote {
   text: string;
@@ -75,7 +75,7 @@ interface Quote {
   source?: string;
 }
 
-async function groupQuotesIntoInsights(topic: string, quotes: Quote[]): Promise<GroupedInsight[]> {
+async function groupSnippetsIntoInsights(topic: string, snippets: Quote[]): Promise<GroupedInsight[]> {
   if (!process.env.CLAUDE_API_KEY) {
     console.log('Claude API key not found, skipping quote grouping');
     return [];
@@ -88,13 +88,13 @@ async function groupQuotesIntoInsights(topic: string, quotes: Quote[]): Promise<
       temperature: 0.1,
     });
 
-    const quotesText = quotes
-      .map((quote, index) => `${index}. "${quote.text}" (Source: ${quote.source || 'Unknown'})`)
+    const snippetsText = snippets
+      .map((snippet, index) => `${index}. "${snippet.text}" (Source: ${snippet.source || 'Unknown'})`)
       .join('\n');
 
     const prompt = GROUPING_PROMPT
       .replace('{topic}', topic)
-      .replace('{quotes}', quotesText);
+      .replace('{snippets}', snippetsText);
 
     const response = await model.invoke([{ role: 'user', content: prompt }]);
     const content = typeof response.content === 'string' ? response.content : '';
@@ -120,14 +120,14 @@ async function groupQuotesIntoInsights(topic: string, quotes: Quote[]): Promise<
     
     const groupedInsights: GroupedInsight[] = (groupings as GroupingResult[]).map((group) => ({
       insight_statement: group.insight_statement,
-      quotes: group.quote_indices.map((index: number) => quotes[index]).filter(Boolean),
+      snippets: group.quote_indices.map((index: number) => snippets[index]).filter(Boolean),
       recommendations: group.recommendations || []
     }));
 
     return groupedInsights;
 
   } catch (error) {
-    console.error(`Error grouping quotes for ${topic}:`, error);
+    console.error(`Error grouping snippets for ${topic}:`, error);
     return [];
   }
 }
@@ -175,8 +175,8 @@ export async function GET() {
 
       if (topicInsights.length === 0) continue;
 
-      // Get ALL quotes for this topic (not just high-relevance ones)
-      const allQuotes = topicInsights
+      // Get ALL snippets for this topic (not just high-relevance ones)
+      const allSnippets = topicInsights
         .filter(insight => insight.insight_type.endsWith('_quote'))
         .map(insight => {
           const metadata = insight.metadata as Record<string, unknown>;
@@ -195,40 +195,45 @@ export async function GET() {
         .map(insight => insight.content)
         .slice(0, 3);
 
-      // Get summary
+      // Get summary and clean up any outdated count references
       const summaryInsight = topicInsights.find(insight => 
         insight.insight_type.endsWith('_summary')
       );
-      const summary = summaryInsight?.content || `${topic} analysis based on customer feedback`;
+      let summary = summaryInsight?.content || `${topic} analysis based on customer feedback`;
+      
+      // Remove outdated "customer touchpoints" references and specific counts
+      summary = summary.replace(/\s*across \d+ customer touchpoints\.?/gi, '.')
+                      .replace(/\s*across customer touchpoints\.?/gi, '.')
+                      .replace(/\.\./g, '.'); // Clean up double periods
 
       const insight = {
         topic,
         summary,
-        snippets: allQuotes,
+        snippets: allSnippets,
         recommendations,
-        total_mentions: allQuotes.length // Use ALL quotes count
+        total_snippets: allSnippets.length // Use ALL snippets count
       };
       if (insight.snippets.length === 0) {
-        // No quotes to group, create a simple grouped version
+        // No snippets to group, create a simple grouped version
         enhancedInsights.push({
           topic: insight.topic,
           summary: insight.summary,
           grouped_insights: [],
           recommendations: insight.recommendations,
-          total_mentions: insight.total_mentions
+          total_snippets: insight.total_snippets
         });
         continue;
       }
 
-      console.log(`Grouping ${insight.snippets.length} quotes for topic: ${insight.topic}`);
-      const groupedInsights = await groupQuotesIntoInsights(insight.topic, insight.snippets);
+      console.log(`Grouping ${insight.snippets.length} snippets for topic: ${insight.topic}`);
+      const groupedInsights = await groupSnippetsIntoInsights(insight.topic, insight.snippets);
 
       enhancedInsights.push({
         topic: insight.topic,
         summary: insight.summary,
         grouped_insights: groupedInsights,
         recommendations: insight.recommendations,
-        total_mentions: insight.total_mentions
+        total_snippets: insight.total_snippets
       });
     }
 
@@ -238,7 +243,7 @@ export async function GET() {
     // Build chart data from enhanced insights
     const chartData = enhancedInsights.map(insight => ({
       name: insight.topic,
-      value: insight.total_mentions
+      value: insight.total_snippets
     })).sort((a, b) => b.value - a.value);
 
     const response_data: GroupedTopicResponse = {
@@ -295,12 +300,12 @@ async function storeGroupedInsights(insights: TopicInsightGrouped[]): Promise<vo
           metadata: {
             topic: topicData.topic,
             insight_index: i,
-            quotes: insight.quotes,
-            total_quotes: insight.quotes.length,
+            snippets: insight.snippets,
+            total_snippets: insight.snippets.length,
             summary: topicData.summary,
             group_recommendations: insight.recommendations,
             theme_recommendations: topicData.recommendations,
-            total_mentions: topicData.total_mentions
+            theme_total_snippets: topicData.total_snippets
           }
         });
       }

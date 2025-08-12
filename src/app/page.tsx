@@ -271,7 +271,7 @@ function DashboardWidgetsGrid() {
         <section className="w-full">
           <h2 className="text-xl font-semibold mb-6 text-slate-800 flex items-center gap-2">
             <div className="w-1 h-6 bg-slate-300 rounded-full"></div>
-            Key Metrics
+            Insights Overview
           </h2>
           <div className="grid grid-cols-1 gap-6">
             <TopicAnalysisWidget />
@@ -281,7 +281,7 @@ function DashboardWidgetsGrid() {
         <section className="w-full">
           <h2 className="text-xl font-semibold mb-6 text-slate-800 flex items-center gap-2">
             <div className="w-1 h-6 bg-slate-300 rounded-full"></div>
-            Topic Insights with Customer Voice
+            Insights by Topic with Customer Voice
           </h2>
           <GroupedTopicInsightsWidget />
         </section>

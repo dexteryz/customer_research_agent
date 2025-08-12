@@ -312,12 +312,20 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
         </div>
       </div>
 
-      {/* Results Info */}
+      {/* Results Info and Pagination */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-slate-600">
           {isLoading ? 'Loading...' : (
             <>
-              {totalSnippets} snippets
+              {(() => {
+                if (totalSnippets > ITEMS_PER_PAGE) {
+                  const startResult = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+                  const endResult = Math.min(currentPage * ITEMS_PER_PAGE, totalSnippets);
+                  return `Showing ${startResult}-${endResult} of ${totalSnippets} snippets`;
+                } else {
+                  return `${totalSnippets} snippets`;
+                }
+              })()}
               {isDemo && (
                 <span className="ml-2 text-blue-600 font-medium">(Demo Data)</span>
               )}
@@ -327,35 +335,28 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
         
         {/* Pagination Controls */}
         {!isLoading && totalSnippets > ITEMS_PER_PAGE && (
-          <div className="flex items-center gap-2">
-            <div className="text-sm text-slate-600">
-              {(() => {
-                const startResult = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-                const endResult = Math.min(currentPage * ITEMS_PER_PAGE, totalSnippets);
-                const totalPages = Math.ceil(totalSnippets / ITEMS_PER_PAGE);
-                return `Results ${startResult}-${endResult} • Page ${currentPage} of ${totalPages}`;
-              })()}
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="h-8 px-3 text-sm"
+            >
+              Previous
+            </Button>
+            <div className="px-3 text-sm text-slate-500">
+              {currentPage} of {Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
             </div>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="h-8 w-8 p-0"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage >= Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
-                className="h-8 w-8 p-0"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage >= Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
+              className="h-8 px-3 text-sm"
+            >
+              Next
+            </Button>
           </div>
         )}
       </div>

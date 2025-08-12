@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
           chunks.forEach((chunk, i) => {
             const extraction = chunkDateExtractions[i]?.extractedDate;
             if (extraction?.date) {
-              (chunk as any).original_date = extraction.date;
+              (chunk as typeof chunk & { original_date?: string }).original_date = extraction.date;
               console.log(`Chunk ${i}: Extracted date ${extraction.date} (${extraction.confidence})`);
             }
           });
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
             .from('file_chunks')
             .insert(chunks);
             
-          const datesExtracted = chunks.filter((chunk: any) => chunk.original_date).length;
+          const datesExtracted = chunks.filter((chunk) => 'original_date' in chunk && chunk.original_date).length;
           console.log(`Inserted ${chunks.length} chunks with ${datesExtracted} dates extracted`);
 
           if (chunksError) {

@@ -39,19 +39,27 @@ export async function GET(req: NextRequest) {
         created_at
       `);
 
-    // Filter by topic (insight_type)
+    // Only return quote-type insights (actual snippets), not AI-generated summaries
     if (topic) {
       const topicMap: { [key: string]: string[] } = {
-        'Pain Points': ['pain_points_quote', 'pain_points_summary'],
-        'Blockers': ['blockers_quote', 'blockers_summary'],
-        'Customer Requests': ['customer_requests_quote', 'customer_requests_summary'],
-        'Solution Feedback': ['solution_feedback_quote', 'solution_feedback_summary']
+        'Pain Points': ['pain_points_quote'],
+        'Blockers': ['blockers_quote'],
+        'Customer Requests': ['customer_requests_quote'],
+        'Solution Feedback': ['solution_feedback_quote']
       };
       
       const insightTypes = topicMap[topic];
       if (insightTypes) {
         query = query.in('insight_type', insightTypes);
       }
+    } else {
+      // When no topic filter, only show quote-type insights
+      query = query.in('insight_type', [
+        'pain_points_quote',
+        'blockers_quote', 
+        'customer_requests_quote',
+        'solution_feedback_quote'
+      ]);
     }
 
     // Add text search if provided

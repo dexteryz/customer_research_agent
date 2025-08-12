@@ -12,7 +12,7 @@ import {
 } from "@/components/dashboard-widgets";
 import { InsightsTabs } from "@/components/insights-tabs";
 import { TopicAnalysisProgress } from "@/components/topic-analysis-progress";
-import { Upload, RefreshCw, BarChart3 } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import Link from 'next/link';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCustomerData } from '@/hooks/useCustomerData';
@@ -109,10 +109,6 @@ function DashboardWidgetsGrid() {
     await checkDataAvailability();
   }
 
-  // Refresh data availability
-  async function handleRefresh() {
-    await checkDataAvailability();
-  }
 
   // Trigger new synthesis with live progress
   function handleGenerateSummary() {
@@ -180,64 +176,43 @@ function DashboardWidgetsGrid() {
               <Logo size="md" />
             </div>
             
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3">
+            {/* Navigation Links and Action Buttons */}
+            <div className="flex items-center gap-6">
+              {/* Evaluations Text Link */}
               <Link 
                 href="/evaluations"
-                className="px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
+                className="text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors duration-200"
                 title="View evaluation dashboard"
               >
-                <BarChart3 className="h-4 w-4" />
-                <span className="hidden sm:inline">Evaluations</span>
+                Evaluations
               </Link>
-              {usingMockData ? (
-                <>
-                  <div className="hidden sm:flex items-center px-3 py-1.5 bg-blue-50 text-blue-800 rounded-lg border border-blue-200 mr-3">
+              
+              <div className="flex items-center gap-3">
+                {usingMockData && (
+                  <div className="hidden sm:flex items-center px-3 py-1.5 bg-blue-50 text-blue-800 rounded-lg border border-blue-200">
                     <span className="text-sm font-medium">📊 Demo Mode</span>
                   </div>
-                  <button
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
-                    onClick={() => setUploadOpen(true)}
-                  >
-                    <Upload className="h-4 w-4" />
-                    Upload Data
-                  </button>
-                  <button
-                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
-                    onClick={handleRefresh}
-                    disabled={loading}
-                    title="Refresh dashboard data"
-                  >
-                    <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                    <span className="hidden sm:inline">Refresh</span>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
-                    onClick={() => setUploadOpen(true)}
-                  >
-                    <Upload className="h-4 w-4" />
-                    <span className="hidden sm:inline">Upload Data</span>
-                  </button>
+                )}
+                
+                {/* Upload Data Button */}
+                <button
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
+                  onClick={() => setUploadOpen(true)}
+                >
+                  <Upload className="h-4 w-4" />
+                  <span className="hidden sm:inline">Upload Data</span>
+                </button>
+                
+                {/* Generate Summary Button - only show when not in demo mode */}
+                {!usingMockData && (
                   <button
                     className="px-4 py-2 bg-slate-900 hover:bg-slate-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200 text-sm"
                     onClick={handleGenerateSummary}
                   >
                     Generate Summary
                   </button>
-                  <button
-                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 text-sm"
-                    onClick={handleRefresh}
-                    disabled={loading}
-                    title="Refresh dashboard data"
-                  >
-                    <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                    <span className="hidden sm:inline">Refresh</span>
-                  </button>
-                </>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

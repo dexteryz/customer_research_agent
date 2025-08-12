@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { GroupedTopicInsightsWidget } from './grouped-topic-insights';
 import { SnippetsTableView } from './snippets-table-view';
+import { Filter } from 'lucide-react';
 
 export interface InsightsTabsProps {
   initialTab?: 'insights' | 'snippets';
@@ -60,8 +61,8 @@ export function InsightsTabs({ initialTab = 'insights', initialFilters }: Insigh
         >
           Snippets
           {(filters.topic || filters.date) && (
-            <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-blue-500 rounded-full">
-              {(filters.topic ? 1 : 0) + (filters.date ? 1 : 0)}
+            <span className="ml-2 inline-flex items-center text-xs text-blue-600" title="Filtered">
+              <Filter className="h-3 w-3" />
             </span>
           )}
         </button>

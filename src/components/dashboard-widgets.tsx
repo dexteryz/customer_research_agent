@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { useEffect, useState } from 'react';
 import { Users, MessageSquare } from 'lucide-react';
-import { Badge } from './ui/badge';
 import { Cell, Tooltip, ResponsiveContainer, PieChart, Pie, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { getTopicChartColor } from '@/utils/topicUtils';
 
@@ -522,34 +521,22 @@ export function SourceBreakdownWidget() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-700">{totalRows}</div>
-              <div className="text-sm text-slate-600">Total Records</div>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center p-4 bg-white/60 rounded-lg">
+              <div className="text-3xl font-bold text-green-700">{totalRows}</div>
+              <div className="text-sm text-slate-600 font-medium">Total Chunks</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-700">{sources.length}</div>
-              <div className="text-sm text-slate-600">Data Sources</div>
+            <div className="text-center p-4 bg-white/60 rounded-lg">
+              <div className="text-3xl font-bold text-green-700">{sources.length}</div>
+              <div className="text-sm text-slate-600 font-medium"># Data Sources</div>
             </div>
           </div>
           
-          <div className="space-y-2">
-            {sources.map((source, index) => (
-              <div key={index} className="flex items-center justify-between p-2 bg-white/60 rounded-lg">
-                <span className="text-sm font-medium text-slate-700 truncate flex-1 mr-2">
-                  {source.name}
-                </span>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {source.count} records
-                  </Badge>
-                  <div className="text-xs text-slate-500">
-                    {Math.round((source.count / totalRows) * 100)}%
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="text-center pt-2">
+            <div className="text-xs text-slate-500">
+              Data imported from {sources.length} source{sources.length !== 1 ? 's' : ''} and processed into {totalRows} chunks
+            </div>
           </div>
         </div>
       </CardContent>

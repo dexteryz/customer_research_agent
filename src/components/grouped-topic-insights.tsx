@@ -219,19 +219,13 @@ export function GroupedTopicInsightsWidget({ onChartClick }: GroupedTopicInsight
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="text-xs font-medium text-slate-600 uppercase tracking-wide">
-                        Key Insights:
+                        Key Insights ({topicData.grouped_insights.length}):
                       </h4>
-                      {getTotalQuotes(topicData.grouped_insights) > 6 && (
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => onChartClick?.(topicData.topic)}
-                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium transition-colors"
-                          >
-                            View all {topicData.total_snippets} snippets →
-                          </button>
+                      <div className="flex items-center gap-2">
+                        {getTotalQuotes(topicData.grouped_insights) > 6 && (
                           <button
                             onClick={() => toggleTopicExpansion(topicData.topic)}
-                            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1 font-medium transition-colors"
+                            className="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md flex items-center gap-1 font-medium transition-colors"
                           >
                             {expandedTopics.has(topicData.topic) ? (
                               <>
@@ -239,12 +233,18 @@ export function GroupedTopicInsightsWidget({ onChartClick }: GroupedTopicInsight
                               </>
                             ) : (
                               <>
-                                Show More <ChevronDown className="h-3 w-3" />
+                                Show All Insights <ChevronDown className="h-3 w-3" />
                               </>
                             )}
                           </button>
-                        </div>
-                      )}
+                        )}
+                        <button
+                          onClick={() => onChartClick?.(topicData.topic)}
+                          className="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md flex items-center gap-1 font-medium transition-colors"
+                        >
+                          View All Snippets ({topicData.total_snippets})
+                        </button>
+                      </div>
                     </div>
 
                     {(() => {
@@ -279,7 +279,7 @@ export function GroupedTopicInsightsWidget({ onChartClick }: GroupedTopicInsight
                                 {insight.snippets.length > 2 && (
                                   <button
                                     onClick={() => toggleInsightExpansion(insightKey)}
-                                    className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
+                                    className="px-1.5 py-0.5 text-xs bg-slate-50 hover:bg-slate-100 text-slate-600 rounded flex items-center gap-1 transition-colors"
                                   >
                                     {isInsightExpanded ? (
                                       <>
@@ -287,7 +287,7 @@ export function GroupedTopicInsightsWidget({ onChartClick }: GroupedTopicInsight
                                       </>
                                     ) : (
                                       <>
-                                        +{insight.snippets.length - 2} more <ChevronDown className="h-3 w-3" />
+                                        Show {insight.snippets.length - 2} More <ChevronDown className="h-3 w-3" />
                                       </>
                                     )}
                                   </button>

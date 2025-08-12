@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Search, Calendar, FileText, TrendingUp, X } from 'lucide-react';
 import type { FilteredSnippet } from '@/app/api/filtered-snippets/route';
 import { getTopicChartColor } from '@/utils/topicUtils';
-import { InteractiveQuote } from './interactive-quote';
 
 interface SnippetsTableViewProps {
   initialFilters?: {
@@ -113,22 +112,6 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     });
   };
 
-  const highlightSearchTerm = (text: string, searchTerm: string) => {
-    if (!searchTerm.trim()) return text;
-    
-    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    const parts = text.split(regex);
-    
-    return parts.map((part, index) =>
-      regex.test(part) ? (
-        <mark key={index} className="bg-yellow-200 px-1 rounded">
-          {part}
-        </mark>
-      ) : (
-        part
-      )
-    );
-  };
 
   return (
     <div className="w-full space-y-6">
@@ -240,43 +223,64 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             )}
           </div>
         ) : (
-          <div className="divide-y divide-slate-200">
-            {snippets.map((snippet, index) => (
-              <div 
-                key={snippet.id}
-                className="p-6 border-b border-slate-100 last:border-b-0"
-              >
-                {/* Snippet Number */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className="text-xs text-slate-400 font-medium">
-                    #{index + 1}
-                  </div>
-                  <div className="flex items-center gap-4 text-xs text-slate-500">
-                    <div className="flex items-center gap-1">
-                      <FileText className="h-3 w-3" />
-                      {snippet.source_file}
-                    </div>
-                    {snippet.original_date && (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(snippet.original_date)}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Interactive Quote */}
-                <div className="mb-2">
-                  <InteractiveQuote
-                    text={snippet.text}
-                    chunkId={snippet.chunk_id}
-                    relevance={0.8}
-                    topic={snippet.topic}
-                    source={snippet.source_file}
-                  />
-                </div>
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+            {/* Table Header */}
+            <div className="bg-slate-50 border-b border-slate-200 px-6 py-3">
+              <div className="grid grid-cols-12 gap-4 text-xs font-medium text-slate-600 uppercase tracking-wide">
+                <div className="col-span-2">Date</div>
+                <div className="col-span-6">Snippet</div>
+                <div className="col-span-2">Topic</div>
+                <div className="col-span-2">Source</div>
               </div>
-            ))}
+            </div>
+            
+            {/* Table Body */}
+            <div className="divide-y divide-slate-200">
+              {snippets.map((snippet) => (
+                <div 
+                  key={snippet.id}
+                  className="px-6 py-4 hover:bg-slate-50 transition-colors"
+                >
+                  <div className="grid grid-cols-12 gap-4 items-start">
+                    {/* Date Column */}
+                    <div className="col-span-2">
+                      <div className="text-sm text-slate-600">
+                        {snippet.original_date ? formatDate(snippet.original_date) : 'No date'}
+                      </div>
+                    </div>
+                    
+                    {/* Snippet Column */}
+                    <div className="col-span-6">
+                      <div className="text-sm text-slate-800 leading-relaxed">
+                        {snippet.text}
+                      </div>
+                    </div>
+                    
+                    {/* Topic Column */}
+                    <div className="col-span-2">
+                      <Badge 
+                        variant="secondary" 
+                        style={{ 
+                          backgroundColor: `${getTopicChartColor(snippet.topic)}15`,
+                          borderColor: getTopicChartColor(snippet.topic),
+                          color: getTopicChartColor(snippet.topic)
+                        }}
+                        className="text-xs font-medium"
+                      >
+                        {snippet.topic}
+                      </Badge>
+                    </div>
+                    
+                    {/* Source Column */}
+                    <div className="col-span-2">
+                      <div className="text-xs text-slate-500 truncate" title={snippet.source_file}>
+                        {snippet.source_file}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

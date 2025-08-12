@@ -248,7 +248,14 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
               }}
             >
               <Calendar className="h-3 w-3" />
-              {startDate ? formatDate(startDate) : 'Start'} - {endDate ? formatDate(endDate) : 'End'}
+              {startDate && endDate 
+                ? `${formatDate(startDate)} - ${formatDate(endDate)}`
+                : startDate 
+                ? formatDate(startDate)
+                : endDate 
+                ? `Until ${formatDate(endDate)}`
+                : 'Date Range'
+              }
               <X className="h-3 w-3 ml-1" />
             </Badge>
           )}

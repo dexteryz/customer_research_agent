@@ -157,14 +157,23 @@ export async function GET(req: NextRequest) {
           
           // Date range filter
           if (startDate || endDate) {
-            const startDateTime = startDate ? new Date(startDate) : null;
-            const endDateTime = endDate ? new Date(endDate) : null;
-            
-            if (startDateTime && snippetDate < startDateTime) {
-              return null;
-            }
-            if (endDateTime && snippetDate > endDateTime) {
-              return null;
+            // If only startDate is provided (e.g., from timeline click), treat it as exact date match
+            if (startDate && !endDate) {
+              const startDateStr = new Date(startDate).toISOString().split('T')[0];
+              if (snippetDateStr !== startDateStr) {
+                return null;
+              }
+            } else {
+              // Handle date range filtering
+              const startDateTime = startDate ? new Date(startDate) : null;
+              const endDateTime = endDate ? new Date(endDate) : null;
+              
+              if (startDateTime && snippetDate < startDateTime) {
+                return null;
+              }
+              if (endDateTime && snippetDate > endDateTime) {
+                return null;
+              }
             }
           }
         }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { transformNotionToFeedbackData } from '../../../utils/notion-data-transformer';
 import { createClient } from '@supabase/supabase-js';
+import { classifyDocumentType } from '@/utils/documentTypeClassifier';
+import { batchExtractDatesWithLLM } from '@/utils/llmDateExtraction';
 
 export async function POST(req: NextRequest) {
   try {
@@ -73,6 +75,10 @@ export async function POST(req: NextRequest) {
         const fileName = `Notion Import ${new Date().toISOString()}`;
         const storagePath = `notion-imports/${Date.now()}-${fileName.replace(/[^a-zA-Z0-9]/g, '-')}.json`;
         
+        // Automatically classify as meeting notes
+        const documentType = classifyDocumentType(fileName);
+        console.log(`Classified Notion import "${fileName}" as: ${documentType}`);
+        
         const { data: fileRecord, error: fileError } = await supabase
           .from('uploaded_files')
           .insert({
@@ -80,6 +86,7 @@ export async function POST(req: NextRequest) {
             storage_path: storagePath,
             size: JSON.stringify(transformedData).length,
             type: 'application/json',
+            document_type: documentType,
             uploaded_at: new Date().toISOString()
           })
           .select()
@@ -116,9 +123,29 @@ export async function POST(req: NextRequest) {
             }
           }
 
+          // Extract original dates from chunks using LLM
+          console.log(`Extracting dates from ${chunks.length} Notion chunks...`);
+          const chunkDateExtractions = await batchExtractDatesWithLLM(
+            chunks.map((chunk, i) => ({ content: chunk.content, id: i.toString() })),
+            fileName,
+            2 // Small batch size for Notion imports
+          );
+          
+          // Update chunks with extracted dates before inserting
+          chunks.forEach((chunk, i) => {
+            const extraction = chunkDateExtractions[i]?.extractedDate;
+            if (extraction?.date) {
+              (chunk as any).original_date = extraction.date;
+              console.log(`Chunk ${i}: Extracted date ${extraction.date} (${extraction.confidence})`);
+            }
+          });
+
           const { error: chunksError } = await supabase
             .from('file_chunks')
             .insert(chunks);
+            
+          const datesExtracted = chunks.filter((chunk: any) => chunk.original_date).length;
+          console.log(`Inserted ${chunks.length} chunks with ${datesExtracted} dates extracted`);
 
           if (chunksError) {
             console.error('Error inserting chunks:', chunksError);

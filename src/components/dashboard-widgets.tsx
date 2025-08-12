@@ -6,7 +6,7 @@ import { useCustomerData } from '@/hooks/useCustomerData';
 import { useEffect, useState } from 'react';
 import { Users, MessageSquare } from 'lucide-react';
 import { Badge } from './ui/badge';
-import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { Cell, Tooltip, ResponsiveContainer, PieChart, Pie, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { getTopicChartColor } from '@/utils/topicUtils';
 
 // Interface moved to contexts/CustomerDataContext.tsx
@@ -105,7 +105,6 @@ export function TopicAnalysisWidget() {
     );
   }
 
-  const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-blue-50 to-blue-100">
@@ -122,28 +121,23 @@ export function TopicAnalysisWidget() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-700">{total}</div>
-              <div className="text-sm text-slate-600">Total Snippets</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-700">{chartData.length}</div>
-              <div className="text-sm text-slate-600">Topic Categories</div>
-            </div>
-          </div>
-          
-          <div className="h-64 w-full">
+          <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-                <XAxis 
-                  dataKey="name" 
-                  tick={{ fontSize: 12, fill: '#475569' }}
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis tick={{ fontSize: 12, fill: '#475569' }} />
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  innerRadius={30}
+                  label={false}
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={getTopicChartColor(entry.name)} />
+                  ))}
+                </Pie>
                 <Tooltip
                   contentStyle={{ 
                     background: 'white', 
@@ -151,15 +145,281 @@ export function TopicAnalysisWidget() {
                     border: '1px solid #e2e8f0',
                     fontSize: 14 
                   }}
+                  formatter={(value: number) => [value, 'Snippets']}
                 />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getTopicChartColor(entry.name)} />
-                  ))}
-                </Bar>
-              </BarChart>
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={36}
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                />
+              </PieChart>
             </ResponsiveContainer>
           </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Summary Stats Widget - Shows total snippets and topic categories
+export function SummaryStatsWidget() {
+  const [stats, setStats] = useState<{totalSnippets: number, totalCategories: number}>({
+    totalSnippets: 0,
+    totalCategories: 0
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
+
+  const fetchStats = () => {
+    setIsLoading(true);
+    setHasError(null);
+    
+    fetch('/api/llm/unified-topic-analysis')
+      .then(res => res.json())
+      .then(json => {
+        const totalSnippets = Array.isArray(json.chartData) ? json.chartData.reduce((sum: number, item: {name: string, value: number}) => sum + item.value, 0) : 0;
+        const totalCategories = Array.isArray(json.chartData) ? json.chartData.length : 0;
+        setStats({ totalSnippets, totalCategories });
+        setIsDemo(!!json.isDemo);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log('Failed to load stats:', error);
+        setHasError('Failed to load stats');
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchStats();
+
+    // Listen for analysis completion
+    const handleAnalysisComplete = (event: CustomEvent) => {
+      if (event.detail?.chartData) {
+        const totalSnippets = event.detail.chartData.reduce((sum: number, item: {name: string, value: number}) => sum + item.value, 0);
+        const totalCategories = event.detail.chartData.length;
+        setStats({ totalSnippets, totalCategories });
+        setIsDemo(false);
+        setIsLoading(false);
+      } else {
+        fetchStats();
+      }
+    };
+
+    window.addEventListener('topicAnalysisComplete', handleAnalysisComplete as EventListener);
+
+    return () => {
+      window.removeEventListener('topicAnalysisComplete', handleAnalysisComplete as EventListener);
+    };
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-slate-50 to-slate-100">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-slate-500" />
+            Summary Stats
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-slate-500 text-sm">Loading stats...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-slate-50 to-slate-100">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-slate-500" />
+            Summary Stats
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-red-600 text-sm">{hasError}</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-purple-50 to-purple-100">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+          <MessageSquare className="h-5 w-5 text-purple-500" />
+          Summary Stats
+          {isDemo && (
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+              Demo Data
+            </span>
+          )}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-purple-700 mb-2">{stats.totalSnippets}</div>
+            <div className="text-sm text-slate-600">Total Snippets</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-purple-700 mb-2">{stats.totalCategories}</div>
+            <div className="text-sm text-slate-600">Topic Categories</div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Snippets Timeline Widget - Shows snippet counts over time by topic (stacked bar chart)
+export function SnippetsTimelineWidget() {
+  const [timelineData, setTimelineData] = useState<Array<{
+    date: string;
+    'Pain Points': number;
+    'Blockers': number;
+    'Customer Requests': number;
+    'Solution Feedback': number;
+  }>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
+
+  const fetchTimelineData = async () => {
+    setIsLoading(true);
+    setHasError(null);
+    
+    try {
+      const response = await fetch('/api/snippets-timeline');
+      const json = await response.json();
+      setTimelineData(Array.isArray(json.timelineData) ? json.timelineData : []);
+      setIsDemo(!!json.isDemo);
+      setIsLoading(false);
+    } catch (error) {
+      console.log('Failed to load timeline data:', error);
+      setHasError('Failed to load timeline data');
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTimelineData();
+
+    // Listen for analysis completion
+    const handleAnalysisComplete = () => {
+      fetchTimelineData();
+    };
+
+    window.addEventListener('topicAnalysisComplete', handleAnalysisComplete as EventListener);
+
+    return () => {
+      window.removeEventListener('topicAnalysisComplete', handleAnalysisComplete as EventListener);
+    };
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-slate-50 to-slate-100">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-slate-500" />
+            Snippets Over Time
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-slate-500 text-sm">Loading timeline data...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-slate-50 to-slate-100">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-slate-500" />
+            Snippets Over Time
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-red-600 text-sm">{hasError}</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (timelineData.length === 0) {
+    return (
+      <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-slate-50 to-slate-100">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-slate-500" />
+            Snippets Over Time
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-slate-500 text-sm">No timeline data available</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full border-0 shadow-sm bg-gradient-to-br from-indigo-50 to-indigo-100">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-medium text-slate-700 flex items-center gap-2">
+          <MessageSquare className="h-5 w-5 text-indigo-500" />
+          Snippets Over Time
+          {isDemo && (
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+              Demo Data
+            </span>
+          )}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-80 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={timelineData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+              <XAxis 
+                dataKey="date" 
+                tick={{ fontSize: 12 }}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return `${date.getMonth() + 1}/${date.getDate()}`;
+                }}
+              />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip
+                contentStyle={{ 
+                  background: 'white', 
+                  borderRadius: 8, 
+                  border: '1px solid #e2e8f0',
+                  fontSize: 14 
+                }}
+                labelFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString('en-US', { 
+                    weekday: 'short',
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                  });
+                }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+              <Bar dataKey="Pain Points" stackId="a" fill="#ef4444" />
+              <Bar dataKey="Blockers" stackId="a" fill="#f97316" />
+              <Bar dataKey="Customer Requests" stackId="a" fill="#3b82f6" />
+              <Bar dataKey="Solution Feedback" stackId="a" fill="#10b981" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </CardContent>
     </Card>

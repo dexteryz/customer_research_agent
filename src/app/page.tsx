@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import {
   SourceBreakdownWidget,
   TopicAnalysisWidget,
+  SummaryStatsWidget,
+  SnippetsTimelineWidget,
 } from "@/components/dashboard-widgets";
 import { GroupedTopicInsightsWidget } from "@/components/grouped-topic-insights";
 import { TopicAnalysisProgress } from "@/components/topic-analysis-progress";
@@ -273,8 +275,10 @@ function DashboardWidgetsGrid() {
             <div className="w-1 h-6 bg-slate-300 rounded-full"></div>
             Insights Overview
           </h2>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <SummaryStatsWidget />
             <TopicAnalysisWidget />
+            <SnippetsTimelineWidget />
           </div>
         </section>
         {/* Topic Insights */}

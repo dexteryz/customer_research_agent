@@ -9,7 +9,10 @@
     "build": "next build",
     "build:scripts": "tsc scripts/eval-insights-worker.ts --outDir scripts --module commonjs",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-progress": "npx tsx scripts/check-progress.ts",
+    "classify-docs": "npx tsx scripts/classify-document-types.ts",
+    "propagate-dates": "npx tsx scripts/propagate-file-dates.ts"
   },
   "dependencies": {
     "@langchain/anthropic": "^0.3.24",

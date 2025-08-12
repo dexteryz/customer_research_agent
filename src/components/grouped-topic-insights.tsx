@@ -27,7 +27,11 @@ interface TopicInsightGrouped {
 }
 
 
-export function GroupedTopicInsightsWidget() {
+interface GroupedTopicInsightsWidgetProps {
+  onChartClick?: (topic?: string, date?: string) => void;
+}
+
+export function GroupedTopicInsightsWidget({ onChartClick }: GroupedTopicInsightsWidgetProps = {}) {
   const [data, setData] = useState<TopicInsightGrouped[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState<string | null>(null);
@@ -218,20 +222,28 @@ export function GroupedTopicInsightsWidget() {
                         Key Insights:
                       </h4>
                       {getTotalQuotes(topicData.grouped_insights) > 6 && (
-                        <button
-                          onClick={() => toggleTopicExpansion(topicData.topic)}
-                          className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium transition-colors"
-                        >
-                          {expandedTopics.has(topicData.topic) ? (
-                            <>
-                              Show Less <ChevronUp className="h-3 w-3" />
-                            </>
-                          ) : (
-                            <>
-                              Show all {topicData.total_snippets} snippets <ChevronDown className="h-3 w-3" />
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => onChartClick?.(topicData.topic)}
+                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium transition-colors"
+                          >
+                            View all {topicData.total_snippets} snippets →
+                          </button>
+                          <button
+                            onClick={() => toggleTopicExpansion(topicData.topic)}
+                            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1 font-medium transition-colors"
+                          >
+                            {expandedTopics.has(topicData.topic) ? (
+                              <>
+                                Show Less <ChevronUp className="h-3 w-3" />
+                              </>
+                            ) : (
+                              <>
+                                Show More <ChevronDown className="h-3 w-3" />
+                              </>
+                            )}
+                          </button>
+                        </div>
                       )}
                     </div>
 

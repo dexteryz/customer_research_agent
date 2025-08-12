@@ -10,9 +10,8 @@ import {
   SummaryStatsWidget,
   SnippetsTimelineWidget,
 } from "@/components/dashboard-widgets";
-import { GroupedTopicInsightsWidget } from "@/components/grouped-topic-insights";
+import { InsightsTabs } from "@/components/insights-tabs";
 import { TopicAnalysisProgress } from "@/components/topic-analysis-progress";
-import { SnippetDetailsModal } from "@/components/snippet-details-modal";
 import { Upload, RefreshCw, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -40,11 +39,9 @@ function DashboardWidgetsGrid() {
   const [progressOpen, setProgressOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   
-  // Snippet details modal state
-  const [snippetModalOpen, setSnippetModalOpen] = useState(false);
-  const [modalTopic, setModalTopic] = useState<string | null>(null);
-  const [modalDate, setModalDate] = useState<string | null>(null);
-  const [modalTitle, setModalTitle] = useState<string>('');
+  // Tab and filter state for insights
+  const [insightsTab, setInsightsTab] = useState<'insights' | 'snippets'>('insights');
+  const [tabFilters, setTabFilters] = useState<{ topic?: string | null; date?: string | null }>({});
 
   // Check if data is available (simplified since widgets handle their own data now)
   async function checkDataAvailability() {
@@ -154,32 +151,16 @@ function DashboardWidgetsGrid() {
 
   // Handle topic slice click from pie chart
   function handleTopicClick(topic: string) {
-    setModalTopic(topic);
-    setModalDate(null);
-    setModalTitle(`${topic} Insights`);
-    setSnippetModalOpen(true);
+    setTabFilters({ topic, date: null });
+    setInsightsTab('snippets');
   }
 
   // Handle bar click from timeline chart
   function handleDateClick(date: string) {
-    setModalTopic(null);
-    setModalDate(date);
-    setModalTitle(`Insights from ${new Date(date).toLocaleDateString('en-US', { 
-      weekday: 'long',
-      month: 'long', 
-      day: 'numeric',
-      year: 'numeric'
-    })}`);
-    setSnippetModalOpen(true);
+    setTabFilters({ topic: null, date });
+    setInsightsTab('snippets');
   }
 
-  // Close modal and reset state
-  function handleModalClose() {
-    setSnippetModalOpen(false);
-    setModalTopic(null);
-    setModalDate(null);
-    setModalTitle('');
-  }
 
   if (loading) {
     return <div className="w-full flex flex-col items-center py-16 text-slate-500">Loading dashboard...</div>;
@@ -317,13 +298,16 @@ function DashboardWidgetsGrid() {
             <SnippetsTimelineWidget onBarClick={handleDateClick} />
           </div>
         </section>
-        {/* Topic Insights */}
+        {/* Insights Tabs */}
         <section className="w-full">
           <h2 className="text-xl font-semibold mb-6 text-slate-800 flex items-center gap-2">
             <div className="w-1 h-6 bg-slate-300 rounded-full"></div>
-            Insights by Topic with Customer Voice
+            Customer Insights & Feedback
           </h2>
-          <GroupedTopicInsightsWidget />
+          <InsightsTabs 
+            initialTab={insightsTab}
+            initialFilters={tabFilters}
+          />
         </section>
         {/* Data Sources */}
         <section className="w-full">
@@ -335,15 +319,6 @@ function DashboardWidgetsGrid() {
         </section>
         </div>
       </div>
-      
-      {/* Snippet Details Modal */}
-      <SnippetDetailsModal
-        isOpen={snippetModalOpen}
-        onClose={handleModalClose}
-        topic={modalTopic}
-        date={modalDate}
-        title={modalTitle}
-      />
       
       {/* Sidebar AI Chat */}
       <SidebarAIChat isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />

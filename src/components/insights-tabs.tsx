@@ -10,6 +10,8 @@ export interface InsightsTabsProps {
   initialFilters?: {
     topic?: string | null;
     date?: string | null;
+    startDate?: string | null;
+    endDate?: string | null;
   };
 }
 
@@ -33,7 +35,7 @@ export function InsightsTabs({ initialTab = 'insights', initialFilters }: Insigh
 
   const handleChartClick = (topic?: string, date?: string) => {
     // Set filters and switch to snippets tab
-    setFilters({ topic: topic || null, date: date || null });
+    setFilters({ topic: topic || null, date: date || null, startDate: null, endDate: null });
     setActiveTab('snippets');
   };
 
@@ -60,7 +62,7 @@ export function InsightsTabs({ initialTab = 'insights', initialFilters }: Insigh
           }`}
         >
           Snippets
-          {(filters.topic || filters.date) && (
+          {(filters.topic || filters.date || filters.startDate || filters.endDate) && (
             <span className="ml-2 inline-flex items-center text-xs text-blue-600" title="Filtered">
               <Filter className="h-3 w-3" />
             </span>

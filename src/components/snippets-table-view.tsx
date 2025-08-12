@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Calendar, FileText, TrendingUp, X } from 'lucide-react';
+import { Search, Calendar, FileText, TrendingUp, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { FilteredSnippet } from '@/app/api/filtered-snippets/route';
 import { getTopicChartColor } from '@/utils/topicUtils';
 
@@ -28,8 +28,10 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
   const [dateFilter, setDateFilter] = useState<string | null>(initialFilters?.date || null);
   const [startDate, setStartDate] = useState<string | null>(initialFilters?.startDate || null);
   const [endDate, setEndDate] = useState<string | null>(initialFilters?.endDate || null);
+  const [noDateFilter, setNoDateFilter] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   
-  const ITEMS_PER_PAGE = 1000; // Show all snippets
+  const ITEMS_PER_PAGE = 50; // Paginate with 50 per page
   
   // Available topic options
   const topicOptions = ['Pain Points', 'Blockers', 'Customer Requests', 'Solution Feedback'];
@@ -54,7 +56,8 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     search: string = '',
     page: number = 1,
     startDate?: string | null,
-    endDate?: string | null
+    endDate?: string | null,
+    noDate?: boolean
   ) => {
     setIsLoading(true);
     try {
@@ -63,6 +66,7 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
       if (date) params.append('date', date);
       if (startDate) params.append('startDate', startDate);
       if (endDate) params.append('endDate', endDate);
+      if (noDate) params.append('noDate', 'true');
       if (search.trim()) params.append('search', search.trim());
       params.append('limit', ITEMS_PER_PAGE.toString());
       params.append('offset', ((page - 1) * ITEMS_PER_PAGE).toString());
@@ -84,18 +88,24 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
 
   // Fetch snippets when filters change (not search - search has its own debounced effect)
   useEffect(() => {
-    fetchSnippets(topicFilter, dateFilter, '', 1, startDate, endDate);
+    setCurrentPage(1); // Reset to first page when filters change
+    fetchSnippets(topicFilter, dateFilter, '', 1, startDate, endDate, noDateFilter);
     setSearchQuery(''); // Clear search when filters change
-  }, [topicFilter, dateFilter, startDate, endDate]);
+  }, [topicFilter, dateFilter, startDate, endDate, noDateFilter]);
 
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchSnippets(topicFilter, dateFilter, searchQuery, 1, startDate, endDate);
+      if (searchQuery !== '' || currentPage === 1) {
+        setCurrentPage(1); // Reset to first page when search changes
+        fetchSnippets(topicFilter, dateFilter, searchQuery, 1, startDate, endDate, noDateFilter);
+      } else {
+        fetchSnippets(topicFilter, dateFilter, searchQuery, currentPage, startDate, endDate, noDateFilter);
+      }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, topicFilter, dateFilter, startDate, endDate]);
+  }, [searchQuery, currentPage, topicFilter, dateFilter, startDate, endDate, noDateFilter]);
 
   const handleTopicChange = (topic: string) => {
     const newTopic = topic === 'all' ? null : topic;
@@ -109,6 +119,7 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
     setDateFilter(null);
     setStartDate(null);
     setEndDate(null);
+    setNoDateFilter(false);
     setSearchQuery('');
     onFiltersChange?.({ topic: null, date: null, startDate: null, endDate: null });
   };
@@ -210,8 +221,25 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             </div>
           </div>
 
+          {/* No Date Filter */}
+          <Button 
+            variant={noDateFilter ? "default" : "outline"} 
+            size="sm"
+            onClick={() => {
+              setNoDateFilter(!noDateFilter);
+              // Clear date filters when using No Date filter
+              if (!noDateFilter) {
+                setStartDate(null);
+                setEndDate(null);
+              }
+            }}
+            className="text-xs"
+          >
+            No Date
+          </Button>
+
           {/* Clear Filters */}
-          {(topicFilter || startDate || endDate || searchQuery) && (
+          {(topicFilter || startDate || endDate || searchQuery || noDateFilter) && (
             <Button 
               variant="secondary" 
               onClick={clearFilters}
@@ -259,6 +287,17 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
               <X className="h-3 w-3 ml-1" />
             </Badge>
           )}
+          {noDateFilter && (
+            <Badge 
+              variant="secondary" 
+              className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setNoDateFilter(false)}
+            >
+              <Calendar className="h-3 w-3" />
+              No Date
+              <X className="h-3 w-3 ml-1" />
+            </Badge>
+          )}
           {searchQuery && (
             <Badge 
               variant="secondary" 
@@ -285,6 +324,35 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
             </>
           )}
         </div>
+        
+        {/* Pagination Controls */}
+        {!isLoading && totalSnippets > ITEMS_PER_PAGE && (
+          <div className="flex items-center gap-2">
+            <div className="text-sm text-slate-600">
+              Page {currentPage} of {Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
+            </div>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage >= Math.ceil(totalSnippets / ITEMS_PER_PAGE)}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Snippets Table */}

@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
     const date = searchParams.get('date');
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
+    const noDate = searchParams.get('noDate') === 'true';
     const search = searchParams.get('search');
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
@@ -69,6 +70,42 @@ export async function GET(req: NextRequest) {
       query = query.ilike('content', `%${search}%`);
     }
     
+    // Get total count first (without pagination) - create a new query for counting
+    let countQuery = supabase
+      .from('llm_insights')
+      .select('id', { count: 'exact', head: true });
+
+    // Apply same filters to count query
+    if (topic) {
+      const topicMap: { [key: string]: string[] } = {
+        'Pain Points': ['pain_points_quote'],
+        'Blockers': ['blockers_quote'],
+        'Customer Requests': ['customer_requests_quote'],
+        'Solution Feedback': ['solution_feedback_quote']
+      };
+      const insightTypes = topicMap[topic];
+      if (insightTypes) {
+        countQuery = countQuery.in('insight_type', insightTypes);
+      }
+    } else {
+      countQuery = countQuery.in('insight_type', [
+        'pain_points_quote',
+        'blockers_quote', 
+        'customer_requests_quote',
+        'solution_feedback_quote'
+      ]);
+    }
+
+    if (search) {
+      countQuery = countQuery.ilike('content', `%${search}%`);
+    }
+
+    const { count: totalCount, error: countError } = await countQuery;
+    
+    if (countError) {
+      console.error('Error counting snippets:', countError);
+    }
+
     // Execute the main query with pagination
     const { data: insights, error } = await query
       .order('created_at', { ascending: false })
@@ -145,8 +182,18 @@ export async function GET(req: NextRequest) {
           }
         }
 
-        // Filter by date if provided
-        if ((date || startDate || endDate) && chunkInfo?.original_date) {
+        // Handle "No Date" filter
+        if (noDate) {
+          // Only include snippets without dates
+          if (chunkInfo?.original_date) {
+            return null;
+          }
+        } else if (date || startDate || endDate) {
+          // Filter by date if provided - exclude snippets without dates from date filtering
+          // If no original_date, exclude from date-filtered results
+          if (!chunkInfo?.original_date) {
+            return null;
+          }
           const snippetDate = new Date(chunkInfo.original_date);
           const snippetDateStr = snippetDate.toISOString().split('T')[0];
           
@@ -215,13 +262,14 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       snippets: filteredSnippets,
-      total: filteredSnippets.length,
+      total: totalCount || filteredSnippets.length,
       isDemo: false,
       filters: {
         topic,
         date,
         startDate,
         endDate,
+        noDate,
         search
       }
     });
@@ -239,6 +287,7 @@ export async function GET(req: NextRequest) {
     });
   }
 }
+
 
 function getTopicFromInsightType(insightType: string): string {
   if (insightType.includes('pain_points')) return 'Pain Points';

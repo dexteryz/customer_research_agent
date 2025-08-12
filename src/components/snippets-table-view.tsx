@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Calendar, FileText, TrendingUp, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Calendar, FileText, TrendingUp, X } from 'lucide-react';
 import type { FilteredSnippet } from '@/app/api/filtered-snippets/route';
 import { getTopicChartColor } from '@/utils/topicUtils';
 

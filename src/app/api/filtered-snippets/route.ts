@@ -260,9 +260,28 @@ export async function GET(req: NextRequest) {
     // Filter out null results (date mismatches)
     const filteredSnippets = snippetsWithContext.filter(Boolean) as FilteredSnippet[];
 
+    // For date filtering, calculate the correct total
+    let actualTotal = totalCount || filteredSnippets.length;
+    
+    // When date filters are active, the totalCount from database doesn't reflect 
+    // the actual filtered results because date filtering happens after the query
+    if (startDate || endDate || noDate) {
+      // Use a simple approach: if this is the first page and we have fewer results
+      // than the page limit, then the total is just the filtered results
+      if (offset === 0 && filteredSnippets.length < limit) {
+        actualTotal = filteredSnippets.length;
+      } else {
+        // For subsequent pages or full first pages, we need a more accurate count
+        // For now, use the pre-filter count as an approximation
+        // This is a known limitation - accurate pagination with date filters
+        // would require more complex querying
+        actualTotal = totalCount || filteredSnippets.length;
+      }
+    }
+
     return NextResponse.json({
       snippets: filteredSnippets,
-      total: totalCount || filteredSnippets.length,
+      total: actualTotal,
       isDemo: false,
       filters: {
         topic,

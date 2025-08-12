@@ -216,11 +216,6 @@ export function SnippetDetailsModal({
                         >
                           {snippet.topic}
                         </Badge>
-                        {snippet.relevance_score > 0 && (
-                          <Badge variant="secondary" className="text-xs">
-                            {Math.round(snippet.relevance_score * 100)}% relevant
-                          </Badge>
-                        )}
                       </div>
                       <div className="text-xs text-slate-500 text-right">
                         #{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}

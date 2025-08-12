@@ -5,7 +5,6 @@ export interface FilteredSnippet {
   id: string;
   text: string;
   topic: string;
-  relevance_score: number;
   source_file: string;
   original_date: string | null;
   created_at: string;
@@ -23,17 +22,10 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return NextResponse.json({
-        snippets: generateMockSnippets(topic, date),
-        total: 25,
-        isDemo: true
-      });
-    }
-
+    // Use environment variables directly - we know they exist
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
     // Build the query based on filters
@@ -44,8 +36,7 @@ export async function GET(req: NextRequest) {
         content,
         insight_type,
         metadata,
-        created_at,
-        relevance_score:score
+        created_at
       `);
 
     // Filter by topic (insight_type)
@@ -67,7 +58,7 @@ export async function GET(req: NextRequest) {
     if (search) {
       query = query.ilike('content', `%${search}%`);
     }
-
+    
     // Execute the main query with pagination
     const { data: insights, error } = await query
       .order('created_at', { ascending: false })
@@ -75,11 +66,23 @@ export async function GET(req: NextRequest) {
       .limit(limit);
 
     if (error) {
-      console.error('Error fetching filtered snippets:', error);
+      console.error('Error fetching filtered snippets:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      
+      // Return error info for debugging
       return NextResponse.json({
-        snippets: generateMockSnippets(topic, date),
-        total: 25,
-        isDemo: true
+        snippets: [],
+        total: 0,
+        isDemo: true,
+        error: {
+          message: error.message,
+          details: error.details,
+          code: error.code
+        }
       });
     }
 
@@ -129,7 +132,6 @@ export async function GET(req: NextRequest) {
           id: insight.id,
           text: insight.content,
           topic: getTopicFromInsightType(insight.insight_type),
-          relevance_score: insight.relevance_score || 0,
           source_file: fileInfo?.name || 'Unknown Source',
           original_date: chunkInfo?.original_date || null,
           created_at: insight.created_at,
@@ -182,7 +184,6 @@ function generateMockSnippets(topic?: string | null, date?: string | null): Filt
       id: '1',
       text: 'The current checkout process is too complicated and confusing for our customers.',
       topic: 'Pain Points',
-      relevance_score: 0.85,
       source_file: 'Customer Survey Q2 2024',
       original_date: '2024-06-15',
       created_at: '2024-06-16T10:00:00Z',
@@ -194,7 +195,6 @@ function generateMockSnippets(topic?: string | null, date?: string | null): Filt
       id: '2', 
       text: 'Users are requesting a mobile app version of our platform.',
       topic: 'Customer Requests',
-      relevance_score: 0.92,
       source_file: 'User Interview Notes',
       original_date: '2024-06-20',
       created_at: '2024-06-21T14:30:00Z',
@@ -206,7 +206,6 @@ function generateMockSnippets(topic?: string | null, date?: string | null): Filt
       id: '3',
       text: 'The API rate limiting is preventing our integration from working properly.',
       topic: 'Blockers',
-      relevance_score: 0.78,
       source_file: 'Support Tickets June',
       original_date: '2024-06-10',
       created_at: '2024-06-11T09:15:00Z',
@@ -218,7 +217,6 @@ function generateMockSnippets(topic?: string | null, date?: string | null): Filt
       id: '4',
       text: 'The new dashboard design is much more intuitive and easier to navigate.',
       topic: 'Solution Feedback',
-      relevance_score: 0.88,
       source_file: 'Beta User Feedback',
       original_date: '2024-06-25',
       created_at: '2024-06-26T16:45:00Z',

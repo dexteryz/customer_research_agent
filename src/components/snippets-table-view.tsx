@@ -332,7 +332,8 @@ export function SnippetsTableView({ initialFilters, onFiltersChange }: SnippetsT
               {(() => {
                 const startResult = (currentPage - 1) * ITEMS_PER_PAGE + 1;
                 const endResult = Math.min(currentPage * ITEMS_PER_PAGE, totalSnippets);
-                return `Results ${startResult}-${endResult}`;
+                const totalPages = Math.ceil(totalSnippets / ITEMS_PER_PAGE);
+                return `Results ${startResult}-${endResult} • Page ${currentPage} of ${totalPages}`;
               })()}
             </div>
             <div className="flex items-center gap-1">
